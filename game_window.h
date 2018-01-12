@@ -14,24 +14,23 @@
 #ifndef GAME_WINDOW_H
 #define GAME_WINDOW_H
 
+#include <vector>
 #include <FL/Fl.H>
 #include <FL/Fl_Window.H>
 #include <FL/Fl_Button.H>
 
-class Game_Window
+class Game_Window: public Fl_Window
 {
 public:
-    Game_Window();
-    void delete_window();
-    Fl_Window* game_address();
-    void hide_game();
-    void show_game();
-    ~Game_Window();
+    Game_Window(int w, int h, const char* n);
+    void show_window(std::vector<int> data);
+    void hide_window();
+    
     
 private:
-    Fl_Window* window;
-    int w;
-    int h;
+    int width;
+    int height;
+    const char* name;
     
     
 };

@@ -11,38 +11,36 @@
  * Created on 10 January 2018, 22:52
  */
 
+#include <iostream>
+#include <vector>
 #include <FL/Fl.H>
 #include <FL/Fl_Window.H>
 #include <FL/Fl_Button.H>
 #include "game_window.h"
 
 
-Game_Window::Game_Window()
+Game_Window::Game_Window(int w, int h, const char* n)
+:
+Fl_Window(w, h, n),
+width(w),
+height(h),
+name(n)
 {
+}
+
+void Game_Window::show_window(std::vector<int> data)
+{
+    for(int i = 0; i < data.size(); i++) {
+        std::cout << data[i] << std::endl;
+    }	
     
-    
-    window = new Fl_Window(340, 280);
-    window->begin();
-    window->end();
-    hide_game();
+    this->begin();
+    this->end();
+    this->show();
 }
 
-
-void Game_Window::hide_game()
+void Game_Window::hide_window()
 {
-    window->hide();
+    this->hide();
 }
 
-void Game_Window::show_game()
-{
-    window->show();
-}
-
-
-
-
-
-Game_Window::~Game_Window()
-{
-    
-}

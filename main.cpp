@@ -22,6 +22,6 @@
 
 int main() 
 {
-    Settings_Window obj;
+    Settings_Window obj(400, 400, "settings");
     return Fl::run();
 }

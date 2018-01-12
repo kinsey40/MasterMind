@@ -21,33 +21,34 @@
 
 #include "game_window.h"
 
-class Settings_Window
+class Settings_Window: public Fl_Window
 {
 public:
-    Settings_Window();
+    Settings_Window(int w, int h, const char* n);
+    int set_no_of_pins();
+    int set_no_of_allowed_guesses();
+    int set_no_of_colour_options();
     void populate_window();
-    static void launch_cb(Fl_Widget* obj, void*);
-    static void win_cb(Fl_Widget *widget, void*);
-    static void set_wh_values();
-    void set_difficulty();
-    void check_game_state();
-    ~Settings_Window();
-
+    void populate_data();
+    static void launch_cb(Fl_Widget* obj, std::vector<int>);
+    static void win_cb(Fl_Widget* obj, void*);
+    
+    
 private:
-    int difficulty;
-    const int no_of_pins;
-    const int no_of_allowed_guesses;
     const int width;
     const int height;
+    const char* name;
     
-    static const int g_width;
-    static const int g_height;
+    int no_of_pins;
+    int no_of_allowed_guesses;
+    int no_of_colour_options;
     
-    Fl_Window* window;
+    std::vector<int> data;
+    
     Fl_Button* but;
     
     static Game_Window game;
-    
+    static int no_of_windows;
     
 };
 
