@@ -21,7 +21,7 @@
 #include "game_window.h"
 
 
-Game_Window Settings_Window::game(400, 400, "Game");
+Game_Window Settings_Window::game(600, 650, "Game");
 int Settings_Window::no_of_windows = 0;
 
 

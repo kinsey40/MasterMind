@@ -17,6 +17,7 @@
 #include <FL/Fl_Window.H>
 #include <FL/Fl_Box.H>
 #include <FL/Fl_Button.H>
+#include <FL/Fl_Double_Window.H>
 #include "settings_window.h"
 
 
@@ -25,3 +26,5 @@ int main()
     Settings_Window obj(400, 400, "settings");
     return Fl::run();
 }
+
+
