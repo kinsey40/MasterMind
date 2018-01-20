@@ -24,10 +24,14 @@ public:
     Square(int x, int y, int w, int h, int no_of_color_options, bool f);
     int handle(int e);
     int get_number_of_clicks();
+    void unfreeze();
+    int clicks_guess();
+    
+    int no_of_clicks; 
     
 private:
     int x_val, y_val;
-    int no_of_clicks; 
+    
     int no_colors;
     
     const int width, height;

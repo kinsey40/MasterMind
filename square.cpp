@@ -28,7 +28,6 @@ no_colors(no_of_color_options),
 frozen(f)
 {
     no_of_clicks = 0;
-    
 }
 
 
@@ -42,48 +41,42 @@ int Square::handle(int e)
             if(no_of_clicks >= no_colors) {
                 no_of_clicks = 0;
             }
+            no_of_clicks++;
             
             switch(no_of_clicks) {
-                case 0:
-                    color(FL_GRAY);
-                    redraw();
-                    no_of_clicks++;
-                    return 1;
-                    
                 case 1:
                     color(FL_BLUE);
                     redraw();
-                    no_of_clicks++;
                     return 1;
                     
                 case 2:
                     color(FL_RED);
                     redraw();
-                    no_of_clicks++;
                     return 1;
                     
                 case 3:
                     color(FL_GREEN);
                     redraw();
-                    no_of_clicks++;
                     return 1;
                     
                 case 4:
                     color(FL_MAGENTA);
                     redraw();
-                    no_of_clicks++;
                     return 1;
                     
                 case 5:
                     color(FL_BLACK);
                     redraw();
-                    no_of_clicks++;
+                    return 1;
+                    
+                case 6:
+                    color(FL_CYAN);
+                    redraw();
                     return 1;
             
                 default:
                     color(FL_GRAY);
                     redraw();
-                    no_of_clicks++;
             }
             
         default:
@@ -96,3 +89,10 @@ int Square::get_number_of_clicks()
 {
     return no_of_clicks;
 }
+
+
+void Square::unfreeze()
+{
+    frozen = false;
+}
+

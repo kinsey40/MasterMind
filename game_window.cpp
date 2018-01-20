@@ -25,12 +25,15 @@
 
 
 Game_Window::Game_Window(int w, int h, const char* n)
-:
-Fl_Double_Window(w, h, n),
-width(w),
-height(h),
-name(n),
-pin_width(100)
+    : Fl_Double_Window(w, h, n),
+      width(w),
+      height(h),
+      name(n),
+      pin_width(100),
+      first_x_coord(50),
+      first_y_coord(50),
+      c_but_width(80),
+      c_but_height(50)
 {
 }
 
@@ -40,12 +43,14 @@ void Game_Window::show_window(std::vector<int> data)
     no_of_pins = data[0];
     no_of_colour_options = data[1];
     no_of_allowed_guesses = data[2];
+    current_row = 0;
     
     this->begin();
     add_vertical_lines();
     add_horizontal_lines();
     draw_numbers();
     add_rows();
+    add_check_button();
     this->end();
     this->show();
 }
@@ -58,11 +63,8 @@ void Game_Window::hide_window()
 
 
 void Game_Window::add_vertical_lines()
-{
-    first_y_coord = 50;
-    first_x_coord = 50;
-    
-    second_x_coord = no_of_pins * get_pin_width();
+{   
+    second_x_coord = (no_of_pins * get_pin_width() + first_x_coord);
     second_y_coord = first_y_coord * (no_of_allowed_guesses + 2);
     
     v_line_1 = new Draw_Line(first_x_coord, first_y_coord, first_x_coord, second_y_coord, NULL);
@@ -117,10 +119,64 @@ void Game_Window::draw_numbers()
 
 void Game_Window::add_rows()
 {
-    // Call an instance of the rows class
-    Row obj(d);
+    for(int i=0; i<no_of_allowed_guesses; i++){
+        int y_val = (i+1)*first_y_coord;
+        Row* obj = new Row(d, first_y_coord, first_x_coord, pin_width, y_val);
+        rows_vec.push_back(obj);
+    }
     
+    unfreeze_row();
 }
+
+
+void Game_Window::unfreeze_row()
+{
+    rows_vec[current_row] -> unfreeze();
+}
+
+
+void Game_Window::advance_row()
+{
+    current_row++;
+}
+
+
+void Game_Window::get_guess()
+{
+    current_guess = rows_vec[current_row] -> get_guess();
+    bool incomplete = false;
+    
+    for(int i=0; i<current_guess.size(); i++){
+        int checker = current_guess[i];
+        if(checker == 0){
+            incomplete = true;
+            break;
+        }
+    }
+    
+    //return incomplete;
+}
+
+
+void Game_Window::add_check_button()
+{
+    int check_x_coord = second_x_coord + ((this->w() - second_x_coord - c_but_width) / 2);
+    int check_y_coord = first_y_coord;
+    
+    check_but = new Fl_Button(check_x_coord, check_y_coord, c_but_width, c_but_height, "Check");
+    check_but -> callback((Fl_Callback*) check_but_cb, this);
+    this->add(check_but);
+}
+
+
+void Game_Window::check_but_cb(Fl_Widget* obj, Game_Window& win)
+{
+    win.get_guess();
+    win.advance_row();
+    win.unfreeze_row();
+}
+
+
 
 void Game_Window::delete_everything()
 {

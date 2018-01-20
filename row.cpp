@@ -19,11 +19,16 @@
 #include "square.h"
 
 
-Row::Row(std::vector<int> data)
+Row::Row(std::vector<int> data, int first_y_val, int first_x_val, int pin_width, int y_v)
 :
 data(data),
-box_width(10),
-box_height(10)
+box_width(20),
+box_height(20),
+pin_dist(10),
+first_y(first_y_val),
+first_x(first_x_val),
+y(y_v),
+pin_w(pin_width)
 {
     no_of_pins = data[0];
     no_of_colour_options = data[1];
@@ -35,7 +40,36 @@ box_height(10)
 
 void Row::draw_boxes()
 {
+    int y_val = y + ((first_y - box_height) / 2);
     
-    Square* sq = new Square(20, 40, box_width, box_height, no_of_colour_options, false);
+    for(int i=0; i<no_of_pins; i++) {
+        int x_val = (first_x + (pin_w*(i+1)) - ((pin_w + box_width) / 2));
+        
+        Square* sq = new Square(x_val, y_val, \
+            box_width, box_height, no_of_colour_options, true);
+        
+        squares_vec.push_back(sq);
+    }
+}
+
+
+void Row::unfreeze()
+{
+    for(int i=0; i<squares_vec.size(); i++){
+        Square* sq = squares_vec[i];
+        sq -> unfreeze();
+    }
+}
+
+
+std::vector<int> Row::get_guess()
+{
+    int g;
     
+    for(int i=0; i<squares_vec.size(); i++){
+        g = squares_vec[i]->get_number_of_clicks();
+        guess.push_back(g);
+    }
+    
+    return guess;
 }
