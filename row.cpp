@@ -62,9 +62,19 @@ void Row::unfreeze()
 }
 
 
+void Row::freeze()
+{
+    for(int i=0; i<squares_vec.size(); i++){
+        Square* sq = squares_vec[i];
+        sq -> freeze();
+    }
+}
+
+
 std::vector<int> Row::get_guess()
 {
     int g;
+    guess.clear();
     
     for(int i=0; i<squares_vec.size(); i++){
         g = squares_vec[i]->get_number_of_clicks();

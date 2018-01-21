@@ -34,11 +34,14 @@ public:
     void add_horizontal_lines();
     void draw_numbers();
     void add_rows();
-    void unfreeze_row();
     void add_check_button();
     void advance_row();
-    void get_guess();
+    bool get_guess();
     int get_pin_width() const;
+    void generate_answer();
+    void evaluate_guess();
+    void game_win();
+    void game_lost();
     static void check_but_cb(Fl_Widget* obj, Game_Window& win);
     void delete_everything();
     
@@ -53,6 +56,10 @@ private:
     int second_y_coord;
     int y_coord;
     int current_row;
+    int right_place;
+    int wrong_place;
+    int g_count;
+    int a_count;
     
     const int first_x_coord;
     const int first_y_coord;
@@ -66,12 +73,16 @@ private:
     Draw_Line* v_line_2;
     
     std::vector<int> d;
+    std::vector<int> current_guess;
+    std::vector<int> answers;
+    std::vector<int> incorrect_guess_places;
+    std::vector<int> incorrect_answer_places;
     
     std::vector<Fl_Text_Buffer*> numbers;
     std::vector<Fl_Text_Display*> disps;
     std::vector<Draw_Line*> lines;
     std::vector<Row*> rows_vec;
-    std::vector<int> current_guess;
+    
     
     Fl_Button* check_but;
     

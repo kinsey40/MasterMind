@@ -25,6 +25,7 @@ public:
     int handle(int e);
     int get_number_of_clicks();
     void unfreeze();
+    void freeze();
     int clicks_guess();
     
     int no_of_clicks; 

@@ -96,3 +96,8 @@ void Square::unfreeze()
     frozen = false;
 }
 
+
+void Square::freeze()
+{
+    frozen = true;
+}

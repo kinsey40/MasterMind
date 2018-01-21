@@ -27,6 +27,7 @@ public:
     void draw_boxes();
     void cover();
     void unfreeze();
+    void freeze();
     std::vector<int> get_guess();
     
     

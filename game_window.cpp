@@ -14,6 +14,8 @@
 #include <iostream>
 #include <vector>
 #include <sstream>
+#include <assert.h>
+#include <algorithm>
 #include <FL/Fl.H>
 #include <FL/Fl_Window.H>
 #include <FL/Fl_Button.H>
@@ -45,7 +47,10 @@ void Game_Window::show_window(std::vector<int> data)
     no_of_allowed_guesses = data[2];
     current_row = 0;
     
+    std::srand(time(NULL));
+    
     this->begin();
+    generate_answer();
     add_vertical_lines();
     add_horizontal_lines();
     draw_numbers();
@@ -125,36 +130,33 @@ void Game_Window::add_rows()
         rows_vec.push_back(obj);
     }
     
-    unfreeze_row();
-}
-
-
-void Game_Window::unfreeze_row()
-{
     rows_vec[current_row] -> unfreeze();
 }
 
 
 void Game_Window::advance_row()
 {
+    rows_vec[current_row] -> freeze();
     current_row++;
+    rows_vec[current_row] -> unfreeze();
 }
 
 
-void Game_Window::get_guess()
+bool Game_Window::get_guess()
 {
     current_guess = rows_vec[current_row] -> get_guess();
     bool incomplete = false;
+    int checker = 0;
     
     for(int i=0; i<current_guess.size(); i++){
-        int checker = current_guess[i];
+        checker = current_guess[i];
         if(checker == 0){
             incomplete = true;
             break;
         }
     }
     
-    //return incomplete;
+    return incomplete;
 }
 
 
@@ -171,11 +173,88 @@ void Game_Window::add_check_button()
 
 void Game_Window::check_but_cb(Fl_Widget* obj, Game_Window& win)
 {
-    win.get_guess();
-    win.advance_row();
-    win.unfreeze_row();
+    bool incom;
+    incom = win.get_guess();
+    
+    if(incom == false){
+        win.evaluate_guess();
+        win.advance_row();
+    }
 }
 
+void Game_Window::generate_answer()
+{
+    answers.clear();
+    for(int i=0; i < no_of_pins; i++){
+        answers.push_back((rand() % (no_of_colour_options - 1)) + 1);
+    }
+}
+
+
+
+void Game_Window::evaluate_guess()
+{
+    right_place = 0;
+    wrong_place = 0;
+
+    incorrect_guess_places.clear();
+    incorrect_answer_places.clear();
+    
+    assert(no_of_pins == current_guess.size());
+    assert(no_of_pins == answers.size());
+
+    for(int j=0; j < no_of_pins; j++) {
+        if(answers[j] == current_guess[j]) {
+            right_place += 1;
+        }
+        else {
+            incorrect_guess_places.push_back(current_guess[j]);
+            incorrect_answer_places.push_back(answers[j]);
+        }
+    }
+    
+    for(int j=1; j < (no_of_colour_options + 1); j++) {
+        g_count = 0;
+        a_count = 0;
+
+        g_count = std::count(incorrect_guess_places.begin(), incorrect_guess_places.end(), j);
+        a_count = std::count(incorrect_answer_places.begin(), incorrect_answer_places.end(), j);
+
+        if(a_count > 0) {
+            if(g_count <= a_count) {
+                wrong_place += g_count;
+            }
+            else {
+                wrong_place += a_count;
+            }
+        }
+    }
+
+    std::cout << "Row No." << current_row << " Right: " << right_place << " " << "Wrong: " << wrong_place << std::endl;
+
+    if(right_place == no_of_pins) {
+        game_win();
+    }
+    else if(current_row >= no_of_allowed_guesses) {
+        game_lost();
+    }
+    else {
+    }
+
+}
+
+
+void Game_Window::game_win()
+{
+    std::cout << "You Won!" << std::endl;
+    rows_vec[current_row] -> freeze();
+}
+
+void Game_Window::game_lost()
+{
+    std::cout << "You Lost!" << std::endl;
+    rows_vec[current_row] -> freeze();
+}
 
 
 void Game_Window::delete_everything()
