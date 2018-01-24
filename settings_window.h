@@ -46,10 +46,6 @@ private:
     std::vector<int> data;
     
     Fl_Button* but;
-    
-    static Game_Window game;
-    static int no_of_windows;
-    
 };
 
 

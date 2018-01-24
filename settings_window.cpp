@@ -21,8 +21,7 @@
 #include "game_window.h"
 
 
-Game_Window Settings_Window::game(650, 650, "Game");
-int Settings_Window::no_of_windows = 0;
+static Game_Window* game;
 
 
 Settings_Window::Settings_Window(int w, int h, const char* n)
@@ -83,18 +82,13 @@ void Settings_Window::populate_window()
 
 void Settings_Window::launch_cb(Fl_Widget* obj, std::vector<int> data)
 {
-    
-    //if(no_of_windows == 0){
-    //    game.show_window(*data);
-    //}
-    
-    no_of_windows++;
-    game.show_window(data);
+    game = new Game_Window(650, 650, "Game");
+    game -> show_window(data);
 }
 
 void Settings_Window::win_cb(Fl_Widget* obj, void*)
 {
-    game.hide_window();
+    game -> hide_window();
     Fl_Window* win = (Fl_Window*)obj;
-    win->hide();
+    win -> hide();
 }

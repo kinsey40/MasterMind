@@ -19,7 +19,7 @@
 #include "square.h"
 
 
-Row::Row(std::vector<int> data, int first_y_val, int first_x_val, int pin_width, int y_v)
+Row::Row(std::vector<int> data, int first_y_val, int first_x_val, int pin_width, int y_v, bool a_row)
 :
 data(data),
 box_width(20),
@@ -33,6 +33,7 @@ pin_w(pin_width)
     no_of_pins = data[0];
     no_of_colour_options = data[1];
     no_of_allowed_guesses = data[2];
+    answer_row = a_row;
     draw_boxes();
     
 }
@@ -82,4 +83,16 @@ std::vector<int> Row::get_guess()
     }
     
     return guess;
+}
+
+
+void Row::reveal(std::vector<int> answer_data)
+{
+    
+    if(answer_row){
+        for(int i=0; i<squares_vec.size(); i++){
+            Square* sq = squares_vec[i];
+            sq -> reveal(answer_data[i]);
+        }
+    }
 }

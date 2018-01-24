@@ -38,46 +38,13 @@ int Square::handle(int e)
     }
     switch(e) {
         case FL_RELEASE:
-            if(no_of_clicks >= no_colors) {
-                no_of_clicks = 0;
-            }
             no_of_clicks++;
             
-            switch(no_of_clicks) {
-                case 1:
-                    color(FL_BLUE);
-                    redraw();
-                    return 1;
-                    
-                case 2:
-                    color(FL_RED);
-                    redraw();
-                    return 1;
-                    
-                case 3:
-                    color(FL_GREEN);
-                    redraw();
-                    return 1;
-                    
-                case 4:
-                    color(FL_MAGENTA);
-                    redraw();
-                    return 1;
-                    
-                case 5:
-                    color(FL_BLACK);
-                    redraw();
-                    return 1;
-                    
-                case 6:
-                    color(FL_CYAN);
-                    redraw();
-                    return 1;
-            
-                default:
-                    color(FL_GRAY);
-                    redraw();
+            if(no_of_clicks >= no_colors + 1) {
+                no_of_clicks = 1;
             }
+            
+            colour();
             
         default:
             return Fl_Box::handle(e);
@@ -100,4 +67,52 @@ void Square::unfreeze()
 void Square::freeze()
 {
     frozen = true;
+}
+
+
+void Square::reveal(int data)
+{
+    no_of_clicks = data;
+    colour();
+}
+
+
+int Square::colour()
+{
+    switch(no_of_clicks) {
+        case 1:
+            color(FL_BLUE);
+            redraw();
+            return 1;
+
+        case 2:
+            color(FL_RED);
+            redraw();
+            return 1;
+
+        case 3:
+            color(FL_GREEN);
+            redraw();
+            return 1;
+
+        case 4:
+            color(FL_MAGENTA);
+            redraw();
+            return 1;
+
+        case 5:
+            color(FL_BLACK);
+            redraw();
+            return 1;
+
+        case 6:
+            color(FL_CYAN);
+            redraw();
+            return 1;
+
+        default:
+            color(FL_GRAY);
+            redraw();
+            return 1;
+    }
 }

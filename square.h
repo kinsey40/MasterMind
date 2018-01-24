@@ -26,6 +26,8 @@ public:
     int get_number_of_clicks();
     void unfreeze();
     void freeze();
+    void reveal(int data);
+    int colour();
     int clicks_guess();
     
     int no_of_clicks; 
