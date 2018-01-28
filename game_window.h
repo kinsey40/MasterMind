@@ -22,7 +22,9 @@
 #include <FL/Fl_Double_Window.H>
 #include <FL/Fl_Text_Display.H>
 #include "draw_line.h"
+#include "settings_window.h"
 #include "row.h"
+
 
 class Game_Window: public Fl_Double_Window
 {
@@ -38,13 +40,19 @@ public:
     void advance_row();
     bool get_guess();
     int get_pin_width() const;
+    int get_result_width() const;
     void generate_answer();
     bool evaluate_guess();
     void game_win();
     void game_lost();
-    static void check_but_cb(Fl_Widget* obj, Game_Window& win);
-    static void win_cb(Fl_Widget* obj, void*);
-    void delete_everything();
+    static void check_but_cb(Fl_Widget* obj, Game_Window* win);
+    static void win_cb(Fl_Widget* obj, Game_Window* win);
+    static void c_settings_but_cb(Fl_Widget* obj, Game_Window* win);
+    static void quit_but_cb(Fl_Widget* obj, Game_Window* win);
+    static void reset_but_cb(Fl_Widget* obj, Game_Window* win);
+    static void set_static_data(std::vector<int> d);
+    void reset_win();
+    
     
     
 private:
@@ -55,6 +63,8 @@ private:
     int no_of_colour_options;
     int second_x_coord;
     int second_y_coord;
+    int third_x_coord;
+    int third_y_coord;
     int y_coord;
     int current_row;
     int right_place;
@@ -68,17 +78,16 @@ private:
     const int pin_width;
     const int o_but_width;
     const int o_but_height;
+    const int result_width;
     
     const char* name;
-    
-    Draw_Line* v_line_1;
-    Draw_Line* v_line_2;
     
     std::vector<int> d;
     std::vector<int> current_guess;
     std::vector<int> answers;
     std::vector<int> incorrect_guess_places;
     std::vector<int> incorrect_answer_places;
+    static std::vector<int> static_data;
     
     std::vector<Fl_Text_Buffer*> numbers;
     std::vector<Fl_Text_Display*> disps;
@@ -89,8 +98,6 @@ private:
     Fl_Button* quit_but;
     Fl_Button* c_settings_but;
     Fl_Button* check_but;
-    
-    
     
 };
 

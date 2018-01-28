@@ -18,7 +18,6 @@
 #include <FL/Fl.H>
 #include <FL/Fl_Window.H>
 #include <FL/Fl_Button.H>
-
 #include "game_window.h"
 
 class Settings_Window: public Fl_Window
@@ -30,8 +29,10 @@ public:
     int set_no_of_colour_options();
     void populate_window();
     void populate_data();
-    static void launch_cb(Fl_Widget* obj, std::vector<int>);
-    static void win_cb(Fl_Widget* obj, void*);
+    static void launch_cb(Fl_Widget* obj, Settings_Window* win);
+    static void win_cb(Fl_Widget* obj, Settings_Window* win);
+    void launch_game();
+    void close_all();
     
     
 private:
@@ -44,7 +45,7 @@ private:
     int no_of_colour_options;
     
     std::vector<int> data;
-    
+       
     Fl_Button* but;
 };
 

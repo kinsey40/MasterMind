@@ -20,9 +20,7 @@
 #include "settings_window.h"
 #include "game_window.h"
 
-
 static Game_Window* game;
-
 
 Settings_Window::Settings_Window(int w, int h, const char* n)
 : 
@@ -35,7 +33,7 @@ name(n)
     set_no_of_colour_options();
     set_no_of_allowed_guesses();
     
-    this->callback((Fl_Callback*) win_cb);
+    this->callback((Fl_Callback*) win_cb, this);
     this->begin();
     this->end();
     populate_window();
@@ -74,21 +72,33 @@ void Settings_Window::populate_data()
 void Settings_Window::populate_window()
 {   
     but = new Fl_Button(20, 40, 300, 100, "Launch");
-    but -> callback((Fl_Callback*) launch_cb, &data);
+    but -> callback((Fl_Callback*) launch_cb, this);
     this->add(but);
     
 }
 
 
-void Settings_Window::launch_cb(Fl_Widget* obj, std::vector<int> data)
-{
-    game = new Game_Window(650, 650, "Game");
-    game -> show_window(data);
+void Settings_Window::launch_cb(Fl_Widget* obj, Settings_Window* win)
+{   
+    win->launch_game();
 }
 
-void Settings_Window::win_cb(Fl_Widget* obj, void*)
+
+void Settings_Window::launch_game()
+{
+    game = new Game_Window(650, 650, "Game");
+    game->show_window(data);
+}
+
+
+void Settings_Window::win_cb(Fl_Widget* obj, Settings_Window* win)
+{
+    win->close_all();
+}
+
+
+void Settings_Window::close_all()
 {
     game -> hide_window();
-    Fl_Window* win = (Fl_Window*)obj;
-    win -> hide();
+    this -> hide();
 }

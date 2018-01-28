@@ -23,9 +23,9 @@
 class Row
 {
 public:
-    Row(std::vector<int> data, int y_val, int first_x_val, int pin_width, int y_v, bool a_row=false);
+    Row(std::vector<int> data, int y_val, int first_x_val, int pin_width, int y_v, int result_width, bool a_row=false);
     void draw_boxes();
-    void cover();
+    void draw_answer_boxes(std::vector<int> guess_in);
     void unfreeze();
     void freeze();
     void reveal(std::vector<int> answer_data);
@@ -39,6 +39,7 @@ private:
     int first_y;
     int first_x;
     int pin_w;
+    int result_w;
     int y;
     
     bool answer_row;

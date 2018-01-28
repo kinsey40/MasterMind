@@ -26,9 +26,12 @@
 #include <FL/Fl_Double_Window.H>
 #include <FL/Fl_Text_Display.H>
 #include <FL/Fl_Box.H>
+#include <FL/fl_draw.H>
 #include "game_window.h"
+#include "settings_window.h"
 
-bool Game_Window::window_already_open;
+bool Game_Window::window_already_open = false;
+std::vector<int> Game_Window::static_data;
 
 Game_Window::Game_Window(int w, int h, const char* n)
     : Fl_Double_Window(w, h, n),
@@ -36,17 +39,18 @@ Game_Window::Game_Window(int w, int h, const char* n)
       height(h),
       name(n),
       pin_width(100),
+      result_width(15),
       first_x_coord(30),
       first_y_coord(50),
       o_but_width(80),
       o_but_height(30)
 {
-    window_already_open = false;
 }
 
 void Game_Window::show_window(std::vector<int> data)
 {   
     std::srand(time(NULL));
+    set_static_data(data);
 
     if(window_already_open == false){
         d = data;
@@ -66,16 +70,18 @@ void Game_Window::show_window(std::vector<int> data)
         add_rows();
         add_other_buttons();
 
-        this->callback((Fl_Callback*) win_cb);
+        this->callback((Fl_Callback*) win_cb, this);
         this->end();
         this->show();
 
     }
 }
+
+
 void Game_Window::hide_window()
 {
-    delete_everything();
     this->hide();
+    window_already_open = false;
 }
 
 
@@ -83,9 +89,15 @@ void Game_Window::add_vertical_lines()
 {   
     second_x_coord = (no_of_pins * get_pin_width() + first_x_coord);
     second_y_coord = first_y_coord * (no_of_allowed_guesses + 2);
+    third_x_coord = second_x_coord + (no_of_pins * get_result_width());
     
-    v_line_1 = new Draw_Line(first_x_coord, first_y_coord, first_x_coord, second_y_coord, NULL);
-    v_line_2 = new Draw_Line(second_x_coord, first_y_coord, second_x_coord, second_y_coord, NULL);
+    Draw_Line* v_line_1 = new Draw_Line(first_x_coord, first_y_coord, first_x_coord, second_y_coord, NULL);
+    Draw_Line* v_line_2 = new Draw_Line(second_x_coord, first_y_coord, second_x_coord, second_y_coord, NULL);
+    Draw_Line* v_line_3 = new Draw_Line(third_x_coord, first_y_coord, third_x_coord, second_y_coord, NULL);
+    
+    lines.push_back(v_line_1);
+    lines.push_back(v_line_2);
+    lines.push_back(v_line_3);
     
 }
 
@@ -95,7 +107,7 @@ void Game_Window::add_horizontal_lines()
     for(int i=0; i<=(no_of_allowed_guesses + 1); i++) {
         y_coord = first_y_coord * (i+1);
         Draw_Line* line = new Draw_Line(first_x_coord, y_coord, \
-            second_x_coord, y_coord, NULL);
+            third_x_coord, y_coord, NULL);
         lines.push_back(line);
     }
     
@@ -105,6 +117,12 @@ int Game_Window::get_pin_width() const
 {
     return pin_width;
 }
+
+int Game_Window::get_result_width() const
+{
+    return result_width;
+}
+
 
 void Game_Window::draw_numbers()
 {
@@ -116,7 +134,6 @@ void Game_Window::draw_numbers()
             input = "Ans";
         }
         else {
-            std::cout << x << std::endl;
             switch(x) {
                 case 1:
                     input = "1.";
@@ -152,7 +169,6 @@ void Game_Window::draw_numbers()
                     input="N/A";
             }
         }
-        std::cout << input << std::endl;
         Fl_Box* b = new Fl_Box(2, ((i+1)*first_y_coord), (first_x_coord - 5), first_y_coord, input);
         b->box(FL_FLAT_BOX);
     }
@@ -166,10 +182,10 @@ void Game_Window::add_rows()
         Row* obj;
         
         if(i == no_of_allowed_guesses) {
-            obj = new Row(d, first_y_coord, first_x_coord, pin_width, y_val, true);
+            obj = new Row(d, first_y_coord, first_x_coord, pin_width, y_val, result_width, true);
         }
         else {
-            obj = new Row(d, first_y_coord, first_x_coord, pin_width, y_val);
+            obj = new Row(d, first_y_coord, first_x_coord, pin_width, y_val, result_width);
         }
         
         rows_vec.push_back(obj);
@@ -216,31 +232,69 @@ void Game_Window::add_other_buttons()
     int quit_x_coord = this->w() - first_x_coord - o_but_width;
     int quit_y_coord = 10;
     
-    //int c_settings_x_coord = ((quit_x_coord - (o_but_width - first_x_coord) - (2 * o_but_width)) / 2);
     int c_settings_x_coord = ((quit_x_coord + (reset_x_coord + o_but_width)) / 2) - o_but_width;
     int c_settings_y_coord = 10 ;
-    
-    std::cout << c_settings_x_coord << " " << first_x_coord << " " << o_but_width << " " << reset_x_coord << " " << quit_x_coord << std::endl;
     
     check_but = new Fl_Button(check_x_coord, check_y_coord, o_but_width, o_but_height, "Check");
     check_but -> callback((Fl_Callback*) check_but_cb, this);
     this->add(check_but);
     
     reset_but = new Fl_Button(reset_x_coord, reset_y_coord, o_but_width, o_but_height, "Reset");
+    reset_but -> callback((Fl_Callback*) reset_but_cb, this);
+    this->add(reset_but);
+    
     quit_but = new Fl_Button(quit_x_coord, quit_y_coord, o_but_width, o_but_height, "Quit");
+    quit_but -> callback((Fl_Callback*) quit_but_cb, this);
+    this->add(quit_but);
+    
     c_settings_but = new Fl_Button(c_settings_x_coord, c_settings_y_coord, o_but_width*2, o_but_height, "Change Settings");
+    c_settings_but -> callback((Fl_Callback*) c_settings_but_cb, this);
+    this->add(c_settings_but);
 }
 
 
-void Game_Window::check_but_cb(Fl_Widget* obj, Game_Window& win)
+void Game_Window::check_but_cb(Fl_Widget* obj, Game_Window* win)
 {
     bool incom;
-    incom = win.get_guess();
+    incom = win->get_guess();
     
     if(incom == false){
-        bool g_over = win.evaluate_guess();
-        if(g_over == false) win.advance_row();
+        bool g_over = win->evaluate_guess();
+        if(g_over == false) win->advance_row();
     }
+}
+
+void Game_Window::set_static_data(std::vector<int> d)
+{
+    Game_Window::static_data = d;
+}
+
+
+void Game_Window::reset_but_cb(Fl_Widget* obj, Game_Window* win)
+{
+    win->reset_win();
+}
+
+
+void Game_Window::reset_win()
+{
+    this->hide();
+    Game_Window* g = new Game_Window(650, 650, "Game");
+    g->show_window(d);
+}
+
+
+void Game_Window::quit_but_cb(Fl_Widget* obj, Game_Window* win)
+{
+    Fl::first_window()->hide();
+    Fl::next_window(Fl::first_window())->hide();
+}
+
+
+void Game_Window::c_settings_but_cb(Fl_Widget* obj, Game_Window* win)
+{
+    window_already_open = false;
+    win->hide();
 }
 
 void Game_Window::generate_answer()
@@ -327,27 +381,8 @@ void Game_Window::game_lost()
 }
 
 
-void Game_Window::delete_everything()
-{
-    Fl::delete_widget(v_line_1);
-    Fl::delete_widget(v_line_2);
-    v_line_1, v_line_2 = NULL;
-    
-    for(int i=0; i<=no_of_allowed_guesses; i++){
-        Fl_Text_Buffer* n = numbers[i];
-        Fl_Text_Display* d = disps[i];
-        Draw_Line* l = lines[i];
-        
-        Fl::delete_widget(l);
-        Fl::delete_widget(d);
-        n->remove_selection();
-        n, d, l = NULL;
-    }
-}
-
-void Game_Window::win_cb(Fl_Widget* obj, void*)
+void Game_Window::win_cb(Fl_Widget* obj, Game_Window* win)
 {
     window_already_open = false;
-    Fl_Window* win = (Fl_Window*)obj;
     win->hide();
 }

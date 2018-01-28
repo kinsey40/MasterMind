@@ -19,7 +19,7 @@
 #include "square.h"
 
 
-Row::Row(std::vector<int> data, int first_y_val, int first_x_val, int pin_width, int y_v, bool a_row)
+Row::Row(std::vector<int> data, int first_y_val, int first_x_val, int pin_width, int y_v, int result_width, bool a_row)
 :
 data(data),
 box_width(20),
@@ -28,7 +28,8 @@ pin_dist(10),
 first_y(first_y_val),
 first_x(first_x_val),
 y(y_v),
-pin_w(pin_width)
+pin_w(pin_width),
+result_w(result_width)
 {
     no_of_pins = data[0];
     no_of_colour_options = data[1];
@@ -53,6 +54,11 @@ void Row::draw_boxes()
     }
 }
 
+
+void Row::draw_answer_boxes(std::vector<int> guess_in)
+{
+    
+}
 
 void Row::unfreeze()
 {
