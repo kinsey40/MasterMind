@@ -87,6 +87,7 @@ private:
     std::vector<int> answers;
     std::vector<int> incorrect_guess_places;
     std::vector<int> incorrect_answer_places;
+    std::vector<int> passing_guess;
     static std::vector<int> static_data;
     
     std::vector<Fl_Text_Buffer*> numbers;

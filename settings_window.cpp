@@ -32,6 +32,7 @@ name(n)
     set_no_of_pins();
     set_no_of_colour_options();
     set_no_of_allowed_guesses();
+    std::cout << this << std::endl;
     
     this->callback((Fl_Callback*) win_cb, this);
     this->begin();

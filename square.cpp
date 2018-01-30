@@ -17,7 +17,7 @@
 #include "square.h"
 
 
-Square::Square(int x, int y, int w, int h, int no_of_color_options, bool f)
+Square::Square(int x, int y, int w, int h, int no_of_color_options, bool f, bool a)
 :
 Fl_Box(FL_UP_BOX, x, y, w, h, ""),
 x_val(x), 
@@ -25,9 +25,14 @@ y_val(y),
 width(w),
 height(h),
 no_colors(no_of_color_options),
-frozen(f)
+frozen(f),
+answer(a)
 {
     no_of_clicks = 0;
+    if(a == true){
+        this->hide();
+    }
+        
 }
 
 
@@ -36,6 +41,7 @@ int Square::handle(int e)
     if(frozen == true){
         return 1;
     }
+    
     switch(e) {
         case FL_RELEASE:
             no_of_clicks++;
@@ -110,6 +116,36 @@ int Square::colour()
             redraw();
             return 1;
 
+        default:
+            color(FL_GRAY);
+            redraw();
+            return 1;
+    }
+}
+
+
+void Square::reveal_result(int data)
+{
+    v = data;
+    set_answer_colour();
+}
+
+
+int Square::set_answer_colour()
+{
+    switch(v) {
+        case 0:
+            color(FL_BLACK);
+            redraw();
+            this->show();
+            return 1;
+        
+        case 1:
+            color(FL_WHITE);
+            redraw();
+            this->show();
+            return 1;
+            
         default:
             color(FL_GRAY);
             redraw();

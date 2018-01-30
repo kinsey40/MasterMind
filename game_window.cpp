@@ -39,7 +39,7 @@ Game_Window::Game_Window(int w, int h, const char* n)
       height(h),
       name(n),
       pin_width(100),
-      result_width(15),
+      result_width(30),
       first_x_coord(30),
       first_y_coord(50),
       o_but_width(80),
@@ -182,10 +182,10 @@ void Game_Window::add_rows()
         Row* obj;
         
         if(i == no_of_allowed_guesses) {
-            obj = new Row(d, first_y_coord, first_x_coord, pin_width, y_val, result_width, true);
+            obj = new Row(d, first_y_coord, first_x_coord, second_x_coord, pin_width, y_val, result_width, true);
         }
         else {
-            obj = new Row(d, first_y_coord, first_x_coord, pin_width, y_val, result_width);
+            obj = new Row(d, first_y_coord, first_x_coord, second_x_coord, pin_width, y_val, result_width);
         }
         
         rows_vec.push_back(obj);
@@ -279,8 +279,11 @@ void Game_Window::reset_but_cb(Fl_Widget* obj, Game_Window* win)
 void Game_Window::reset_win()
 {
     this->hide();
-    Game_Window* g = new Game_Window(650, 650, "Game");
-    g->show_window(d);
+    Settings_Window* upper_win = (Settings_Window*) Fl::first_window();
+    
+    window_already_open = false;
+    upper_win ->launch_game();
+    
 }
 
 
@@ -314,6 +317,7 @@ bool Game_Window::evaluate_guess()
 
     incorrect_guess_places.clear();
     incorrect_answer_places.clear();
+    passing_guess.clear();
     
     assert(no_of_pins == current_guess.size());
     assert(no_of_pins == answers.size());
@@ -344,7 +348,21 @@ bool Game_Window::evaluate_guess()
             }
         }
     }
-
+    
+    for(int i=0; i < right_place; i++) {
+        passing_guess.push_back(1);
+    }
+    
+    for(int i=0; i < wrong_place; i++) {
+        passing_guess.push_back(0);
+    }
+    
+    for(int i=0; i < no_of_pins - (right_place + wrong_place); i++) {
+        passing_guess.push_back(-1);
+    }
+    
+    rows_vec[current_row] -> reveal_result(passing_guess);
+    
     std::cout << "Row No." << current_row << " Right: " << right_place << " " << "Wrong: " << wrong_place << std::endl;
     bool game_over = true;
     

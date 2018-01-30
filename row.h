@@ -23,12 +23,13 @@
 class Row
 {
 public:
-    Row(std::vector<int> data, int y_val, int first_x_val, int pin_width, int y_v, int result_width, bool a_row=false);
+    Row(std::vector<int> data, int y_val, int first_x_val, int second_x_val, int pin_width, int y_v, int result_width, bool a_row=false);
     void draw_boxes();
     void draw_answer_boxes(std::vector<int> guess_in);
     void unfreeze();
     void freeze();
     void reveal(std::vector<int> answer_data);
+    void reveal_result(std::vector<int> guess_data);
     std::vector<int> get_guess();
     
     
@@ -38,6 +39,7 @@ private:
     int no_of_colour_options;
     int first_y;
     int first_x;
+    int second_x;
     int pin_w;
     int result_w;
     int y;
@@ -46,12 +48,14 @@ private:
     
     const int box_width;
     const int box_height;
+    const int a_width;
+    const int a_height;
     const int pin_dist;
     
     std::vector<int> data;
-    std::vector<int> answer;
     std::vector<int> guess;
     std::vector<Square*> squares_vec;
+    std::vector<Square*> results_vec;
 };
 
 
