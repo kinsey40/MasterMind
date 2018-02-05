@@ -53,6 +53,7 @@ void Game_Window::show_window(std::vector<int> data)
     set_static_data(data);
 
     if(window_already_open == false){
+        d.clear();
         d = data;
         no_of_pins = data[0];
         no_of_colour_options = data[1];
@@ -296,6 +297,7 @@ void Game_Window::quit_but_cb(Fl_Widget* obj, Game_Window* win)
 
 void Game_Window::c_settings_but_cb(Fl_Widget* obj, Game_Window* win)
 {
+    static_data.clear();
     window_already_open = false;
     win->hide();
 }
@@ -362,8 +364,6 @@ bool Game_Window::evaluate_guess()
     }
     
     rows_vec[current_row] -> reveal_result(passing_guess);
-    
-    std::cout << "Row No." << current_row << " Right: " << right_place << " " << "Wrong: " << wrong_place << std::endl;
     bool game_over = true;
     
     if(right_place == no_of_pins) {

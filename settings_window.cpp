@@ -17,6 +17,7 @@
 #include <FL/Fl_Window.H>
 #include <FL/Fl_Box.H>
 #include <FL/Fl_Button.H>
+#include <FL/Fl_Choice.H>
 #include "settings_window.h"
 #include "game_window.h"
 
@@ -29,42 +30,27 @@ width(w),
 height(h),
 name(n)
 {
-    set_no_of_pins();
-    set_no_of_colour_options();
-    set_no_of_allowed_guesses();
-    std::cout << this << std::endl;
+    set_starting_values();
     
     this->callback((Fl_Callback*) win_cb, this);
     this->begin();
     this->end();
     populate_window();
-    populate_data();
     this->show();
 }
 
 
-int Settings_Window::set_no_of_pins()
+void Settings_Window::set_starting_values()
 {
     no_of_pins = 4;
-    return no_of_pins;
-}
-
-
-int Settings_Window::set_no_of_allowed_guesses()
-{
     no_of_allowed_guesses = 10;
-    return no_of_allowed_guesses;
-}
-
-
-int Settings_Window::set_no_of_colour_options()
-{
     no_of_colour_options = 4;
-    return no_of_colour_options;
+    
 }
 
 void Settings_Window::populate_data()
 {
+    data.clear();
     data.push_back(no_of_pins);
     data.push_back(no_of_colour_options);
     data.push_back(no_of_allowed_guesses);
@@ -72,10 +58,49 @@ void Settings_Window::populate_data()
 
 void Settings_Window::populate_window()
 {   
-    but = new Fl_Button(20, 40, 300, 100, "Launch");
-    but -> callback((Fl_Callback*) launch_cb, this);
-    this->add(but);
+    int but_width = 80;
+    int but_height = 50;
     
+    int width = (this->w() / 2) - (but_width / 2);
+    int height = 250;
+    
+    int l_width = 80;
+    int l_height = 20;
+    
+    int l_gap = 15;
+    
+    int x_value = (this->w() / 2) - (l_width / 2);
+    
+    int first_y_val = 140;
+    int second_y_val = first_y_val + (1 * (l_height + l_gap));
+    int third_y_val = first_y_val + (2 * (l_height + l_gap));
+    
+    but = new Fl_Button(width, height, but_width, but_height, "Launch");
+    but -> callback((Fl_Callback*) launch_cb, this);
+    
+    label_no_of_pins = new Fl_Choice(x_value, first_y_val, l_width, l_height, "No. of pins:");
+    label_no_of_pins->add("3", 0, (Fl_Callback*) no_of_pins_3_cb, this, 0);
+    label_no_of_pins->add("4", 0, (Fl_Callback*) no_of_pins_4_cb, this, 0);
+    label_no_of_pins->add("5", 0, (Fl_Callback*) no_of_pins_5_cb, this, 0);
+    
+    label_no_of_allowed_guesses = new Fl_Choice(x_value, second_y_val, l_width, l_height, "No. of guesses:");
+    label_no_of_allowed_guesses->add("8", 0, (Fl_Callback*) no_of_allowed_guesses_8_cb, this, 0);
+    label_no_of_allowed_guesses->add("9", 0, (Fl_Callback*) no_of_allowed_guesses_9_cb, this, 0);
+    label_no_of_allowed_guesses->add("10", 0, (Fl_Callback*) no_of_allowed_guesses_10_cb, this, 0);
+    
+    label_no_of_colours = new Fl_Choice(x_value, third_y_val, l_width, l_height, "No. of colours:");
+    label_no_of_colours->add("3", 0, (Fl_Callback*) no_of_colours_3_cb, this, 0);
+    label_no_of_colours->add("4", 0, (Fl_Callback*) no_of_colours_4_cb, this, 0);
+    label_no_of_colours->add("5", 0, (Fl_Callback*) no_of_colours_5_cb, this, 0);
+    
+    label_no_of_pins->value(1);
+    label_no_of_allowed_guesses->value(2);
+    label_no_of_colours->value(1);
+    
+    this->add(label_no_of_pins);
+    this->add(label_no_of_allowed_guesses);
+    this->add(label_no_of_colours);
+    this->add(but);
 }
 
 
@@ -87,7 +112,11 @@ void Settings_Window::launch_cb(Fl_Widget* obj, Settings_Window* win)
 
 void Settings_Window::launch_game()
 {
-    game = new Game_Window(650, 650, "Game");
+    populate_data();
+    int w = 150 * no_of_pins;
+    int h = (50 * no_of_allowed_guesses) + 150;
+    
+    game = new Game_Window(w, h, "Game");
     game->show_window(data);
 }
 
@@ -95,6 +124,60 @@ void Settings_Window::launch_game()
 void Settings_Window::win_cb(Fl_Widget* obj, Settings_Window* win)
 {
     win->close_all();
+}
+
+
+void Settings_Window::no_of_pins_3_cb(Fl_Widget* obj, Settings_Window* win)
+{
+    win->no_of_pins = 3;
+}
+
+
+void Settings_Window::no_of_pins_4_cb(Fl_Widget* obj, Settings_Window* win)
+{
+    win->no_of_pins = 4;
+}
+
+
+void Settings_Window::no_of_pins_5_cb(Fl_Widget* obj, Settings_Window* win)
+{
+    win->no_of_pins = 5;
+}
+
+
+void Settings_Window::no_of_allowed_guesses_8_cb(Fl_Widget* obj, Settings_Window* win)
+{
+    win->no_of_allowed_guesses = 8;
+}
+
+
+void Settings_Window::no_of_allowed_guesses_9_cb(Fl_Widget* obj, Settings_Window* win)
+{
+    win->no_of_allowed_guesses = 9;
+}
+
+
+void Settings_Window::no_of_allowed_guesses_10_cb(Fl_Widget* obj, Settings_Window* win)
+{
+    win->no_of_allowed_guesses = 10;
+}
+
+
+void Settings_Window::no_of_colours_3_cb(Fl_Widget* obj, Settings_Window* win)
+{
+    win->no_of_colour_options = 3;
+}
+
+
+void Settings_Window::no_of_colours_4_cb(Fl_Widget* obj, Settings_Window* win)
+{
+    win->no_of_colour_options = 4;
+}
+
+
+void Settings_Window::no_of_colours_5_cb(Fl_Widget* obj, Settings_Window* win)
+{
+    win->no_of_colour_options = 5;
 }
 
 
