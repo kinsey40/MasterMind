@@ -12,10 +12,9 @@
  */
 
 #include <FL/Fl.H>
+#include <FL/Fl_Window.H>
 #include <FL/fl_draw.H>
 #include "draw_line.h"
-#include <iostream>
-#include <FL/Fl_Window.H>
 
 
 Draw_Line::Draw_Line(int X, int Y, int X2, int Y2, const char* L=0)
@@ -31,6 +30,7 @@ y2(Y2)
         
 void Draw_Line::draw() 
 {
+    
     fl_color(FL_BLACK);
     fl_line(x1, y1, x2, y2);
 }

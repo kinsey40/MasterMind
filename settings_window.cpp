@@ -18,6 +18,7 @@
 #include <FL/Fl_Box.H>
 #include <FL/Fl_Button.H>
 #include <FL/Fl_Choice.H>
+#include <FL/Fl_Multiline_Output.H>
 #include "settings_window.h"
 #include "game_window.h"
 
@@ -42,6 +43,7 @@ name(n)
 
 void Settings_Window::set_starting_values()
 {
+    no_instruction_wins = 0;
     no_of_pins = 4;
     no_of_allowed_guesses = 10;
     no_of_colour_options = 4;
@@ -69,11 +71,32 @@ void Settings_Window::populate_window()
     
     int l_gap = 15;
     
+    int m_width = 200;
+    int m_height = 70;
+    int m_x_val = (this->w() / 2) - (m_width / 2);
+    int m_y_val = 10;
+    
+    int i_width = 105;
+    int i_height = 25;
+    int i_x_val = (this->w() / 2) - (i_width / 2);
+    int i_y_val = 100;
+    
     int x_value = (this->w() / 2) - (l_width / 2);
     
     int first_y_val = 140;
     int second_y_val = first_y_val + (1 * (l_height + l_gap));
     int third_y_val = first_y_val + (2 * (l_height + l_gap));
+    
+    message = new Fl_Box(m_x_val, m_y_val, m_width, m_height, "Welcome to\nMasterMind");
+    message->box(FL_NO_BOX);
+    message->labelsize(30);
+    message->labelfont(FL_BOLD);
+    
+    instructions = new Fl_Button(i_x_val, i_y_val, i_width, i_height, "Instructions");
+    instructions->labelsize(14);
+    instructions->labelcolor(FL_BLUE);
+    instructions->labelfont(FL_BOLD);
+    instructions->callback((Fl_Callback*) instructions_cb, this);
     
     but = new Fl_Button(width, height, but_width, but_height, "Launch");
     but -> callback((Fl_Callback*) launch_cb, this);
@@ -97,10 +120,12 @@ void Settings_Window::populate_window()
     label_no_of_allowed_guesses->value(2);
     label_no_of_colours->value(1);
     
+    this->add(message);
+    this->add(instructions);
+    this->add(but);
     this->add(label_no_of_pins);
     this->add(label_no_of_allowed_guesses);
     this->add(label_no_of_colours);
-    this->add(but);
 }
 
 
@@ -178,6 +203,34 @@ void Settings_Window::no_of_colours_4_cb(Fl_Widget* obj, Settings_Window* win)
 void Settings_Window::no_of_colours_5_cb(Fl_Widget* obj, Settings_Window* win)
 {
     win->no_of_colour_options = 5;
+}
+
+
+void Settings_Window::instructions_cb(Fl_Widget* obj, Settings_Window* win)
+{
+    int value = win->no_instruction_wins;
+    int win_size = 300;
+    int gap = 10;
+    
+    if(value == 0){
+        Fl_Window* new_win = new Fl_Window(win_size, win_size, "instructions");    
+        Fl_Multiline_Output *o = new Fl_Multiline_Output((gap/2), (gap/2), new_win->w()-gap, new_win->h()-gap);
+        o->value("Hi");
+        new_win->callback((Fl_Callback*) win_i_cb, win);
+        new_win->add(o);
+        new_win->show();
+    }
+    
+    win->no_instruction_wins++;
+}
+
+
+void Settings_Window::win_i_cb(Fl_Widget* obj, Settings_Window* win)
+{
+    Fl_Window* i_win = (Fl_Window*) obj;
+    i_win->hide();
+
+    win->no_instruction_wins = 0;
 }
 
 

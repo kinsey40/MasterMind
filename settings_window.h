@@ -41,6 +41,9 @@ public:
     static void no_of_colours_4_cb(Fl_Widget* obj, Settings_Window* win);
     static void no_of_colours_5_cb(Fl_Widget* obj, Settings_Window* win);
     
+    static void instructions_cb(Fl_Widget* obj, Settings_Window* win);
+    static void win_i_cb(Fl_Widget* obj, Settings_Window* win);
+    
     static void launch_cb(Fl_Widget* obj, Settings_Window* win);
     static void win_cb(Fl_Widget* obj, Settings_Window* win);
     
@@ -56,9 +59,12 @@ private:
     int no_of_pins;
     int no_of_allowed_guesses;
     int no_of_colour_options;
+    int no_instruction_wins;
     
     std::vector<int> data;
-       
+    
+    Fl_Box* message;
+    Fl_Button* instructions;
     Fl_Button* but;
     Fl_Choice* label_no_of_pins;
     Fl_Choice* label_no_of_allowed_guesses;
