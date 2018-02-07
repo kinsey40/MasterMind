@@ -100,6 +100,7 @@ private:
     Fl_Button* c_settings_but;
     Fl_Button* check_but;
     
+    Fl_Window* end_win;
 };
 
 #endif /* GAME_WINDOW_H */

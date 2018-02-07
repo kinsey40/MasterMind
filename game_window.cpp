@@ -81,6 +81,10 @@ void Game_Window::show_window(std::vector<int> data)
 
 void Game_Window::hide_window()
 {
+    if(end_win != NULL){
+        end_win->hide();
+    }
+    
     this->hide();
     window_already_open = false;
 }
@@ -279,6 +283,10 @@ void Game_Window::reset_but_cb(Fl_Widget* obj, Game_Window* win)
 
 void Game_Window::reset_win()
 {
+    if(end_win != NULL){
+        end_win->hide();
+    }
+    
     this->hide();
     Settings_Window* upper_win = (Settings_Window*) Fl::first_window();
     
@@ -289,14 +297,22 @@ void Game_Window::reset_win()
 
 
 void Game_Window::quit_but_cb(Fl_Widget* obj, Game_Window* win)
-{
-    Fl::first_window()->hide();
-    Fl::next_window(Fl::first_window())->hide();
+{ 
+    if(win->end_win != NULL){
+        win->end_win->hide();
+    }
+    
+    Settings_Window* w = (Settings_Window*) Fl::next_window(Fl::first_window());
+    w->close_all();
 }
 
 
 void Game_Window::c_settings_but_cb(Fl_Widget* obj, Game_Window* win)
 {
+    if(win->end_win != NULL){
+        win->end_win->hide();
+    }
+    
     static_data.clear();
     window_already_open = false;
     win->hide();
@@ -382,20 +398,36 @@ bool Game_Window::evaluate_guess()
 
 void Game_Window::game_win()
 {
-    std::cout << "You Won!" << std::endl;
-    for(int i=0; i<no_of_allowed_guesses; i++){
+    end_win = new Fl_Window(250, 100, "game over");
+    Fl_Box* end_message = new Fl_Box(10, 10, 230, 80, "You Win!");
+    end_message->box(FL_NO_BOX);
+    end_message->labelsize(42);
+    end_message->labelfont(FL_BOLD);
+    end_win->add(end_message);
+    
+    for(int i=0; i<no_of_allowed_guesses; i++) {
         rows_vec[i] -> freeze();    
     }
     rows_vec[no_of_allowed_guesses] -> reveal(answers);
+    
+    end_win->show();
 }
 
 void Game_Window::game_lost()
 {
-    std::cout << "You Lost!" << std::endl;
+    end_win = new Fl_Window(250, 100, "game over");
+    Fl_Box* end_message = new Fl_Box(10, 10, 230, 80, "You Lost!");
+    end_message->box(FL_NO_BOX);
+    end_message->labelsize(42);
+    end_message->labelfont(FL_BOLD);
+    end_win->add(end_message);
+    
     for(int i=0; i<no_of_allowed_guesses; i++){
         rows_vec[i] -> freeze();    
     }
     rows_vec[no_of_allowed_guesses] -> reveal(answers);
+    
+    end_win->show();
 }
 
 
