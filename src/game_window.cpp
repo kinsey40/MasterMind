@@ -61,6 +61,7 @@ void Game_Window::show_window(std::vector<int> data)
     
         window_already_open = true;
         current_row = 0;
+        game_end = false;
     
         this->begin();
 
@@ -398,36 +399,49 @@ bool Game_Window::evaluate_guess()
 
 void Game_Window::game_win()
 {
-    end_win = new Fl_Window(250, 100, "game over");
-    Fl_Box* end_message = new Fl_Box(10, 10, 230, 80, "You Win!");
-    end_message->box(FL_NO_BOX);
-    end_message->labelsize(42);
-    end_message->labelfont(FL_BOLD);
-    end_win->add(end_message);
+    if(game_end == false) {
+        end_win = new Fl_Window(250, 100, "game over");
     
-    for(int i=0; i<no_of_allowed_guesses; i++) {
-        rows_vec[i] -> freeze();    
+        Fl_Box* end_message = new Fl_Box(10, 10, 230, 80, "You Win!");
+        end_message->box(FL_NO_BOX);
+        end_message->labelsize(42);
+        end_message->labelfont(FL_BOLD);
+
+        end_win->add(end_message);
+
+        for(int i=0; i<no_of_allowed_guesses; i++) {
+            rows_vec[i] -> freeze();    
+        }
+        rows_vec[no_of_allowed_guesses] -> reveal(answers);
+
+        end_win->show();
     }
-    rows_vec[no_of_allowed_guesses] -> reveal(answers);
     
-    end_win->show();
+    game_end = true;
 }
+
 
 void Game_Window::game_lost()
 {
-    end_win = new Fl_Window(250, 100, "game over");
-    Fl_Box* end_message = new Fl_Box(10, 10, 230, 80, "You Lost!");
-    end_message->box(FL_NO_BOX);
-    end_message->labelsize(42);
-    end_message->labelfont(FL_BOLD);
-    end_win->add(end_message);
-    
-    for(int i=0; i<no_of_allowed_guesses; i++){
-        rows_vec[i] -> freeze();    
+    if(game_end == false) {
+        end_win = new Fl_Window(250, 100, "game over");
+        
+        Fl_Box* end_message = new Fl_Box(10, 10, 230, 80, "You Lost!");
+        end_message->box(FL_NO_BOX);
+        end_message->labelsize(42);
+        end_message->labelfont(FL_BOLD);
+        
+        end_win->add(end_message);
+
+        for(int i=0; i<no_of_allowed_guesses; i++){
+            rows_vec[i] -> freeze();    
+        }
+        rows_vec[no_of_allowed_guesses] -> reveal(answers);
+
+        end_win->show();
     }
-    rows_vec[no_of_allowed_guesses] -> reveal(answers);
     
-    end_win->show();
+    game_end == true;
 }
 
 

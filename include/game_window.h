@@ -71,7 +71,6 @@ private:
     int wrong_place;
     int g_count;
     int a_count;
-    static bool window_already_open;
     
     const int first_x_coord;
     const int first_y_coord;
@@ -79,6 +78,9 @@ private:
     const int o_but_width;
     const int o_but_height;
     const int result_width;
+    
+    bool game_end;
+    static bool window_already_open;
     
     const char* name;
     
