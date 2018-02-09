@@ -1,7 +1,25 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * The MIT License
+ *
+ * Copyright 2018 kinsey40.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
  */
 
 /* 
@@ -9,10 +27,11 @@
  * Author: kinsey40
  * 
  * Created on 10 January 2018, 22:22
+ * 
+ * The Settings_Window cpp file, defining the relevant functions for this class
  */
 
-#include <iostream>
-#include <vector>
+
 #include <FL/Fl.H>
 #include <FL/Fl_Window.H>
 #include <FL/Fl_Box.H>
@@ -22,8 +41,12 @@
 #include "settings_window.h"
 #include "game_window.h"
 
+
+/** Global variable declared as static to interact with relevant callback */
 static Game_Window* game;
 
+
+/** Constructor */
 Settings_Window::Settings_Window(int w, int h, const char* n)
 : 
 Fl_Window(w, h, n),
@@ -41,6 +64,7 @@ name(n)
 }
 
 
+/** Sets the starting values as default */
 void Settings_Window::set_starting_values()
 {
     no_instruction_wins = 0;
@@ -50,6 +74,8 @@ void Settings_Window::set_starting_values()
     
 }
 
+
+/** Populates the data vector */
 void Settings_Window::populate_data()
 {
     data.clear();
@@ -58,6 +84,11 @@ void Settings_Window::populate_data()
     data.push_back(no_of_allowed_guesses);
 }
 
+
+/** Populates the window with the widgets, assigns relevant values for the X, Y,
+ * width and height values for those widgets. It also sets the callbacks for 
+ * those widgets.
+ */
 void Settings_Window::populate_window()
 {   
     int but_width = 80;
@@ -129,12 +160,14 @@ void Settings_Window::populate_window()
 }
 
 
+/** Calls the launch game function, as the launch button callback */
 void Settings_Window::launch_cb(Fl_Widget* obj, Settings_Window* win)
 {   
     win->launch_game();
 }
 
 
+/** Launches the applications game window by defining the Game_Window game */
 void Settings_Window::launch_game()
 {
     populate_data();
@@ -146,6 +179,7 @@ void Settings_Window::launch_game()
 }
 
 
+/** The callback for the actual window (the Settings_Window object itself) */
 void Settings_Window::win_cb(Fl_Widget* obj, Settings_Window* win)
 {
     win->close_all();
@@ -206,6 +240,7 @@ void Settings_Window::no_of_colours_5_cb(Fl_Widget* obj, Settings_Window* win)
 }
 
 
+/** Callback for the instructions button */
 void Settings_Window::instructions_cb(Fl_Widget* obj, Settings_Window* win)
 {
     int value = win->no_instruction_wins;
@@ -214,7 +249,8 @@ void Settings_Window::instructions_cb(Fl_Widget* obj, Settings_Window* win)
     
     if(value == 0){
         Fl_Window* new_win = new Fl_Window(win_size, win_size, "instructions");    
-        Fl_Multiline_Output *o = new Fl_Multiline_Output((gap/2), (gap/2), new_win->w()-gap, new_win->h()-gap);
+        Fl_Multiline_Output *o = new Fl_Multiline_Output((gap/2), (gap/2), \
+            new_win->w()-gap, new_win->h()-gap);
         o->value("Hi");
         new_win->callback((Fl_Callback*) win_i_cb, win);
         new_win->add(o);
@@ -225,6 +261,7 @@ void Settings_Window::instructions_cb(Fl_Widget* obj, Settings_Window* win)
 }
 
 
+/** Callback for the created instructions window */
 void Settings_Window::win_i_cb(Fl_Widget* obj, Settings_Window* win)
 {
     Fl_Window* i_win = (Fl_Window*) obj;
@@ -234,6 +271,7 @@ void Settings_Window::win_i_cb(Fl_Widget* obj, Settings_Window* win)
 }
 
 
+/** Appropriately close all the currently open FLTK windows */
 void Settings_Window::close_all()
 {
     game -> hide_window();

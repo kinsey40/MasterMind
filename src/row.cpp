@@ -1,7 +1,25 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * The MIT License
+ *
+ * Copyright 2018 kinsey40.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
  */
 
 /* 
@@ -9,16 +27,20 @@
  * Author: kinsey40
  * 
  * Created on 17 January 2018, 21:02
+ * 
+ * The source file for the Row class. Which couples various functions on the 
+ * grouped square objects
  */
 
+
+#include <vector>
 #include <FL/Fl.H>
 #include <FL/Fl_Box.H>
-#include <iostream>
-#include <vector>
 #include "row.h"
 #include "square.h"
 
 
+/** Constructor */
 Row::Row(std::vector<int> data, int first_y_val, int first_x_val, int second_x_val, int pin_width, int y_v, int result_width, bool a_row)
 :
 data(data),
@@ -43,19 +65,17 @@ result_w(result_width)
 }
 
 
+/** Draw the actual answer boxes by calling the Square class, storing the objects
+ * inside vectors.
+ */
 void Row::draw_boxes()
 {
     int y_val = y + ((first_y - box_height) / 2);
     int y_val_r = y + ((first_y - a_height) / 2);
     
-    //int c_r = ((no_of_pins * result_w + 2 * second_x) / 2) + ((i+1) - (no_of_pins/2)) * a_width;
-    
     for(int i=0; i<no_of_pins; i++) { 
         int x_val = (first_x + (pin_w*(i+1)) - ((pin_w + box_width) / 2));
         int x_val_r = (((no_of_pins * result_w) + (2 * second_x)) / 2) + (i - (no_of_pins/2)) * a_width;
-        
-        //int x_val_r = ((no_of_pins * result_w + 2 * second_x) / 2) + (a_width*(i+1));
-        //int x_val_r = (second_x + (a_width*(i+1)));
         
         Square* sq = new Square(x_val, y_val, \
             box_width, box_height, no_of_colour_options, true, false);
@@ -87,6 +107,9 @@ void Row::freeze()
 }
 
 
+/** Get the current input on the squares by the user, compare this to the answer
+ * and send the result to the squares class to display the correct message
+ */
 std::vector<int> Row::get_guess()
 {
     int g;
@@ -101,6 +124,7 @@ std::vector<int> Row::get_guess()
 }
 
 
+/** Reveal the answer row at the end of the game */
 void Row::reveal(std::vector<int> answer_data)
 {
     if(answer_row){
@@ -112,6 +136,7 @@ void Row::reveal(std::vector<int> answer_data)
 }
 
 
+/** Reveal how correct the guess is by the user */
 void Row::reveal_result(std::vector<int> guess_data)
 {
     for(int i=0; i<results_vec.size(); i++){

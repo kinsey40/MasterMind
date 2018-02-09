@@ -1,7 +1,25 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * The MIT License
+ *
+ * Copyright 2018 kinsey40.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
  */
 
 /* 
@@ -9,14 +27,19 @@
  * Author: kinsey40
  * 
  * Created on 19 January 2018, 21:06
+ * 
+ * The source file for the Square class. Ideally, should have made two separate 
+ * classes from this (a squares_answer; squares_pin), instead of using a flag 
+ * to identify the objects that are answer squares. 
  */
+
 
 #include <FL/Fl.H>
 #include <FL/Fl_Box.H>
-#include <iostream>
 #include "square.h"
 
 
+/** Constructor */
 Square::Square(int x, int y, int w, int h, int no_of_color_options, bool f, bool a)
 :
 Fl_Box(FL_UP_BOX, x, y, w, h, ""),
@@ -36,6 +59,7 @@ answer(a)
 }
 
 
+/** Inherits from the pre-made handle of Fl_Box, calls the colour function */
 int Square::handle(int e)
 {   
     if(frozen == true){
@@ -76,6 +100,7 @@ void Square::freeze()
 }
 
 
+/** Show the value behind that square, by colouring it */
 void Square::reveal(int data)
 {
     no_of_clicks = data;
@@ -83,6 +108,9 @@ void Square::reveal(int data)
 }
 
 
+/** Logically decide which colour the square should be, depending on 
+ * no_of_clicks 
+ */
 int Square::colour()
 {
     switch(no_of_clicks) {
@@ -124,6 +152,7 @@ int Square::colour()
 }
 
 
+/** Reveal for those squares that are an answer */
 void Square::reveal_result(int data)
 {
     v = data;
@@ -131,6 +160,7 @@ void Square::reveal_result(int data)
 }
 
 
+/** Colour the answer squares differently */
 int Square::set_answer_colour()
 {
     switch(v) {

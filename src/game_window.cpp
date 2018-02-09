@@ -1,7 +1,25 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * The MIT License
+ *
+ * Copyright 2018 kinsey40.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
  */
 
 /* 
@@ -9,30 +27,29 @@
  * Author: kinsey40
  * 
  * Created on 10 January 2018, 22:52
+ * 
+ * The source file for the Game_Window class. Here the main functions that 
+ * control the games functionality are defined. 
  */
 
-#include <iostream>
+
 #include <vector>
 #include <sstream>
 #include <assert.h>
 #include <algorithm>
-#include <typeinfo>
-#include <string>
 #include <FL/Fl.H>
-#include <FL/Fl_Window.H>
 #include <FL/Fl_Button.H>
-#include <FL/Fl_Line_Dial.H>
-#include <FL/fl_draw.H>
 #include <FL/Fl_Double_Window.H>
-#include <FL/Fl_Text_Display.H>
 #include <FL/Fl_Box.H>
-#include <FL/fl_draw.H>
 #include "game_window.h"
 #include "settings_window.h"
 
-bool Game_Window::window_already_open = false;
-std::vector<int> Game_Window::static_data;
 
+/** Global variable controls only having one Game_Window open */
+bool Game_Window::window_already_open = false;
+
+
+/** Constructor */
 Game_Window::Game_Window(int w, int h, const char* n)
     : Fl_Double_Window(w, h, n),
       width(w),
@@ -47,10 +64,11 @@ Game_Window::Game_Window(int w, int h, const char* n)
 {
 }
 
+
+/** Show the window and set the relevant parameters */
 void Game_Window::show_window(std::vector<int> data)
 {   
     std::srand(time(NULL));
-    set_static_data(data);
 
     if(window_already_open == false){
         d.clear();
@@ -80,6 +98,7 @@ void Game_Window::show_window(std::vector<int> data)
 }
 
 
+/** Hide the window, allows user to close Game_Window from Settings_Window */
 void Game_Window::hide_window()
 {
     if(end_win != NULL){
@@ -97,9 +116,12 @@ void Game_Window::add_vertical_lines()
     second_y_coord = first_y_coord * (no_of_allowed_guesses + 2);
     third_x_coord = second_x_coord + (no_of_pins * get_result_width());
     
-    Draw_Line* v_line_1 = new Draw_Line(first_x_coord, first_y_coord, first_x_coord, second_y_coord, NULL);
-    Draw_Line* v_line_2 = new Draw_Line(second_x_coord, first_y_coord, second_x_coord, second_y_coord, NULL);
-    Draw_Line* v_line_3 = new Draw_Line(third_x_coord, first_y_coord, third_x_coord, second_y_coord, NULL);
+    Draw_Line* v_line_1 = new Draw_Line(first_x_coord, first_y_coord, \
+            first_x_coord, second_y_coord, NULL);
+    Draw_Line* v_line_2 = new Draw_Line(second_x_coord, first_y_coord, \
+            second_x_coord, second_y_coord, NULL);
+    Draw_Line* v_line_3 = new Draw_Line(third_x_coord, first_y_coord, \
+            third_x_coord, second_y_coord, NULL);
     
     lines.push_back(v_line_1);
     lines.push_back(v_line_2);
@@ -119,10 +141,12 @@ void Game_Window::add_horizontal_lines()
     
 }
 
+
 int Game_Window::get_pin_width() const 
 {
     return pin_width;
 }
+
 
 int Game_Window::get_result_width() const
 {
@@ -130,6 +154,11 @@ int Game_Window::get_result_width() const
 }
 
 
+/** Draw the numbers down the left hand side of the Game_Window, difficulty
+ * arose directly inserting the const char * value into the Fl_box, this appears
+ * to be a slight bug with FLTK. Therefore, the switch-case statement is 
+ * required 
+ */
 void Game_Window::draw_numbers()
 {
     for(int i=0; i<=no_of_allowed_guesses; i++){
@@ -175,12 +204,16 @@ void Game_Window::draw_numbers()
                     input="N/A";
             }
         }
-        Fl_Box* b = new Fl_Box(2, ((i+1)*first_y_coord), (first_x_coord - 5), first_y_coord, input);
+        Fl_Box* b = new Fl_Box(2, ((i+1)*first_y_coord), (first_x_coord - 5), \
+                first_y_coord, input);
         b->box(FL_FLAT_BOX);
     }
 }
 
 
+/** Create the Rows objects, store these objects into a vector to interact with 
+ * later
+ */
 void Game_Window::add_rows()
 {
     for(int i=0; i<=no_of_allowed_guesses; i++){
@@ -188,10 +221,12 @@ void Game_Window::add_rows()
         Row* obj;
         
         if(i == no_of_allowed_guesses) {
-            obj = new Row(d, first_y_coord, first_x_coord, second_x_coord, pin_width, y_val, result_width, true);
+            obj = new Row(d, first_y_coord, first_x_coord, second_x_coord, \
+                    pin_width, y_val, result_width, true);
         }
         else {
-            obj = new Row(d, first_y_coord, first_x_coord, second_x_coord, pin_width, y_val, result_width);
+            obj = new Row(d, first_y_coord, first_x_coord, second_x_coord, \
+                    pin_width, y_val, result_width);
         }
         
         rows_vec.push_back(obj);
@@ -201,6 +236,9 @@ void Game_Window::add_rows()
 }
 
 
+/** Advance the row, by freezing the current row to prevent interaction and 
+ * unfreezing the next row, to allow interactions 
+ */
 void Game_Window::advance_row()
 {
     rows_vec[current_row] -> freeze();
@@ -209,6 +247,7 @@ void Game_Window::advance_row()
 }
 
 
+/** Get the current guess and evaluate if the game is complete */
 bool Game_Window::get_guess()
 {
     current_guess = rows_vec[current_row] -> get_guess();
@@ -227,6 +266,7 @@ bool Game_Window::get_guess()
 }
 
 
+/** Add the other buttons to the window with relevant callbacks and positions */
 void Game_Window::add_other_buttons()
 {
     int check_x_coord = (second_x_coord + first_x_coord - o_but_width) / 2; 
@@ -238,27 +278,33 @@ void Game_Window::add_other_buttons()
     int quit_x_coord = this->w() - first_x_coord - o_but_width;
     int quit_y_coord = 10;
     
-    int c_settings_x_coord = ((quit_x_coord + (reset_x_coord + o_but_width)) / 2) - o_but_width;
+    int c_settings_x_coord = ((quit_x_coord + \
+            (reset_x_coord + o_but_width)) / 2) - o_but_width;
     int c_settings_y_coord = 10 ;
     
-    check_but = new Fl_Button(check_x_coord, check_y_coord, o_but_width, o_but_height, "Check");
+    check_but = new Fl_Button(check_x_coord, check_y_coord, o_but_width, \
+            o_but_height, "Check");
     check_but -> callback((Fl_Callback*) check_but_cb, this);
     this->add(check_but);
     
-    reset_but = new Fl_Button(reset_x_coord, reset_y_coord, o_but_width, o_but_height, "Reset");
+    reset_but = new Fl_Button(reset_x_coord, reset_y_coord, o_but_width, \
+            o_but_height, "Reset");
     reset_but -> callback((Fl_Callback*) reset_but_cb, this);
     this->add(reset_but);
     
-    quit_but = new Fl_Button(quit_x_coord, quit_y_coord, o_but_width, o_but_height, "Quit");
+    quit_but = new Fl_Button(quit_x_coord, quit_y_coord, o_but_width, \
+            o_but_height, "Quit");
     quit_but -> callback((Fl_Callback*) quit_but_cb, this);
     this->add(quit_but);
     
-    c_settings_but = new Fl_Button(c_settings_x_coord, c_settings_y_coord, o_but_width*2, o_but_height, "Change Settings");
+    c_settings_but = new Fl_Button(c_settings_x_coord, c_settings_y_coord, \
+            o_but_width*2, o_but_height, "Change Settings");
     c_settings_but -> callback((Fl_Callback*) c_settings_but_cb, this);
     this->add(c_settings_but);
 }
 
 
+/** Callback for the 'check' button */
 void Game_Window::check_but_cb(Fl_Widget* obj, Game_Window* win)
 {
     bool incom;
@@ -270,18 +316,17 @@ void Game_Window::check_but_cb(Fl_Widget* obj, Game_Window* win)
     }
 }
 
-void Game_Window::set_static_data(std::vector<int> d)
-{
-    Game_Window::static_data = d;
-}
 
-
+/** Callback for the 'reset' button */
 void Game_Window::reset_but_cb(Fl_Widget* obj, Game_Window* win)
 {
     win->reset_win();
 }
 
 
+/** Cast the Settings_Window class onto the Fl::first_window() parameter in 
+ * order to call the function which re-launches the game 
+ */
 void Game_Window::reset_win()
 {
     if(end_win != NULL){
@@ -292,11 +337,14 @@ void Game_Window::reset_win()
     Settings_Window* upper_win = (Settings_Window*) Fl::first_window();
     
     window_already_open = false;
-    upper_win ->launch_game();
+    upper_win -> launch_game();
     
 }
 
 
+/** Callback for the Quit button, uses the Fl::next_window() to grab the 
+ * Settings_Window, whilst passing the address of the Game_Window 
+ */
 void Game_Window::quit_but_cb(Fl_Widget* obj, Game_Window* win)
 { 
     if(win->end_win != NULL){
@@ -308,27 +356,37 @@ void Game_Window::quit_but_cb(Fl_Widget* obj, Game_Window* win)
 }
 
 
+/** Change Settings by merely closing the Game_Window, and re-setting the 
+ * only-one-window flag
+ */
 void Game_Window::c_settings_but_cb(Fl_Widget* obj, Game_Window* win)
 {
     if(win->end_win != NULL){
         win->end_win->hide();
     }
     
-    static_data.clear();
     window_already_open = false;
     win->hide();
 }
 
+
+/** Generate a random answer using basic random number generator */
 void Game_Window::generate_answer()
 {
     answers.clear();
     for(int i=0; i < no_of_pins; i++){
         answers.push_back((rand() % no_of_colour_options) + 1);
-        std::cout << answers[i] << std::endl;
     }
 }
 
 
+/* Evaluate the guess, by comparing the guess and answer vectors. Firstly, look
+ * at all the values that are both correct and in the correct place. Next, 
+ * search both vectors looking for numbers that are equal. 
+ * 
+ * Count how many of these numbers are equal in the vectors for a particular 
+ * value, then use the smaller amount, as per the game for MasterMind
+ */
 bool Game_Window::evaluate_guess()
 {
     right_place = 0;
@@ -355,8 +413,10 @@ bool Game_Window::evaluate_guess()
         g_count = 0;
         a_count = 0;
 
-        g_count = std::count(incorrect_guess_places.begin(), incorrect_guess_places.end(), j);
-        a_count = std::count(incorrect_answer_places.begin(), incorrect_answer_places.end(), j);
+        g_count = std::count(incorrect_guess_places.begin(), \
+                incorrect_guess_places.end(), j);
+        a_count = std::count(incorrect_answer_places.begin(), \
+                incorrect_answer_places.end(), j);
 
         if(a_count > 0) {
             if(g_count <= a_count) {
@@ -397,6 +457,7 @@ bool Game_Window::evaluate_guess()
 }
 
 
+/** Create a new window if the game has been won, and display a nice message */
 void Game_Window::game_win()
 {
     if(game_end == false) {
@@ -421,6 +482,7 @@ void Game_Window::game_win()
 }
 
 
+/** Create a new window if the game has been lost, and display a nice message */
 void Game_Window::game_lost()
 {
     if(game_end == false) {
@@ -445,6 +507,7 @@ void Game_Window::game_lost()
 }
 
 
+/** This allows the user to appropriately hide the window and re-set the flag */
 void Game_Window::win_cb(Fl_Widget* obj, Game_Window* win)
 {
     window_already_open = false;
