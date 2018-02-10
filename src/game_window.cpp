@@ -98,12 +98,14 @@ void Game_Window::add_vertical_lines()
     second_y_coord = first_y_coord * (no_of_allowed_guesses + 2);
     third_x_coord = second_x_coord + (no_of_pins * get_result_width());
     
+    int third_y_coord = first_y_coord * (no_of_allowed_guesses + 1);
+    
     Draw_Line* v_line_1 = new Draw_Line(first_x_coord, first_y_coord, \
-            first_x_coord, second_y_coord, NULL);
+            first_x_coord, second_y_coord, false, NULL);
     Draw_Line* v_line_2 = new Draw_Line(second_x_coord, first_y_coord, \
-            second_x_coord, second_y_coord, NULL);
+            second_x_coord, second_y_coord, false, NULL);
     Draw_Line* v_line_3 = new Draw_Line(third_x_coord, first_y_coord, \
-            third_x_coord, second_y_coord, NULL);
+            third_x_coord, third_y_coord, false, NULL);
     
     lines.push_back(v_line_1);
     lines.push_back(v_line_2);
@@ -116,9 +118,25 @@ void Game_Window::add_horizontal_lines()
 {
     for(int i=0; i<=(no_of_allowed_guesses + 1); i++) {
         y_coord = first_y_coord * (i+1);
-        Draw_Line* line = new Draw_Line(first_x_coord, y_coord, \
-            third_x_coord, y_coord, NULL);
-        lines.push_back(line);
+        
+        if(i == no_of_allowed_guesses + 1){
+            Draw_Line* line = new Draw_Line(first_x_coord, y_coord, \
+                second_x_coord, y_coord, false, NULL);
+            lines.push_back(line);
+        }
+        else if(i == no_of_allowed_guesses) {
+            Draw_Line* line_1 = new Draw_Line(first_x_coord, y_coord, \
+                second_x_coord, y_coord, true, NULL);
+            Draw_Line* line_2 = new Draw_Line(second_x_coord, y_coord, \
+                third_x_coord, y_coord, false, NULL);
+            lines.push_back(line_1);
+            lines.push_back(line_2);
+        }
+        else {
+            Draw_Line* line = new Draw_Line(first_x_coord, y_coord, \
+                third_x_coord, y_coord, false, NULL);
+            lines.push_back(line);
+        }
     }
     
 }
@@ -143,49 +161,45 @@ int Game_Window::get_result_width() const
  */
 void Game_Window::draw_numbers()
 {
-    for(int i=0; i<=no_of_allowed_guesses; i++){
+    for(int i=0; i<no_of_allowed_guesses; i++){
         const char* input;
         int x = i + 1;
         
-        if(i == no_of_allowed_guesses) {
-            input = "Ans";
+        switch(x) {
+            case 1:
+                input = "1.";
+                break;
+            case 2:
+                input = "2.";
+                break;
+            case 3:
+                input = "3.";
+                break;
+            case 4:
+                input = "4.";
+                break;
+            case 5:
+                input = "5.";
+                break;
+            case 6:
+                input = "6.";
+                break;
+            case 7:
+                input = "7.";
+                break;
+            case 8:
+                input = "8.";
+                break;
+            case 9:
+                input = "9.";
+                break;
+            case 10:
+                input = "10.";
+                break;
+            default:
+                input="N/A";
         }
-        else {
-            switch(x) {
-                case 1:
-                    input = "1.";
-                    break;
-                case 2:
-                    input = "2.";
-                    break;
-                case 3:
-                    input = "3.";
-                    break;
-                case 4:
-                    input = "4.";
-                    break;
-                case 5:
-                    input = "5.";
-                    break;
-                case 6:
-                    input = "6.";
-                    break;
-                case 7:
-                    input = "7.";
-                    break;
-                case 8:
-                    input = "8.";
-                    break;
-                case 9:
-                    input = "9.";
-                    break;
-                case 10:
-                    input = "10.";
-                    break;
-                default:
-                    input="N/A";
-            }
-        }
+        
         Fl_Box* b = new Fl_Box(2, ((i+1)*first_y_coord), (first_x_coord - 5), \
                 first_y_coord, input);
         b->box(FL_FLAT_BOX);

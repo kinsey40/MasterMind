@@ -45,14 +45,17 @@
 class Draw_Line: public Fl_Widget {
 public:
     /** Constructor */
-    Draw_Line(int X, int Y, int X2, int Y2, const char* L);
+    Draw_Line(int X, int Y, int X2, int Y2, bool thick, const char* L);
     
     /** Overloaded function */
     void draw();
 
 private:
-    /* Integer variables for the coordinates */
+    /** Integer variables for the coordinates */
     int x1, y1, x2, y2;
+    
+    /** Bool to identify if this is a thick line or not */
+    bool t;
 };
 
 

@@ -40,12 +40,13 @@
 
 
 /* Constructor */
-Draw_Line::Draw_Line(int X, int Y, int X2, int Y2, const char* L=0)
+Draw_Line::Draw_Line(int X, int Y, int X2, int Y2, bool thick, const char* L=0)
 :Fl_Widget(X,Y,X2,Y2,L),
 x1(X),
 y1(Y),
 x2(X2),
-y2(Y2)
+y2(Y2),
+t(thick)
 {
     draw();
 }
@@ -55,5 +56,13 @@ y2(Y2)
 void Draw_Line::draw() 
 {
     fl_color(FL_BLACK);
-    fl_line(x1, y1, x2, y2);
+    if(t == true) {
+        fl_line_style(0, 4);
+        fl_line(x1, y1, x2, y2);
+        fl_line_style(0, 0);
+    }
+    
+    else {
+        fl_line(x1, y1, x2, y2);
+    }
 }
