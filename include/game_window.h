@@ -82,9 +82,6 @@ public:
     void game_win();
     void game_lost();
     
-    /** Call this function when the reset button is clicked */
-    void reset_win();
-    
     /** Get and evaluate the guess, returning a bool to show if game is over */
     bool get_guess();
     bool evaluate_guess();
@@ -99,6 +96,7 @@ public:
     static void c_settings_but_cb(Fl_Widget* obj, Game_Window* win);
     static void quit_but_cb(Fl_Widget* obj, Game_Window* win);
     static void reset_but_cb(Fl_Widget* obj, Game_Window* win);
+    
     
     
 private:

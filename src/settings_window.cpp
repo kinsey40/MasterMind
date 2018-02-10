@@ -32,6 +32,7 @@
  */
 
 
+#include <iostream>
 #include <FL/Fl.H>
 #include <FL/Fl_Window.H>
 #include <FL/Fl_Box.H>
@@ -43,7 +44,7 @@
 
 
 /** Global variable declared as static to interact with relevant callback */
-static Game_Window* game;
+//static Game_Window* game;
 
 
 /** Constructor */
@@ -174,7 +175,7 @@ void Settings_Window::launch_game()
     int w = 150 * no_of_pins;
     int h = (50 * no_of_allowed_guesses) + 150;
     
-    game = new Game_Window(w, h, "Game");
+    Game_Window* game = new Game_Window(w, h, "Game");
     game->show_window(data);
 }
 
@@ -248,13 +249,13 @@ void Settings_Window::instructions_cb(Fl_Widget* obj, Settings_Window* win)
     int gap = 10;
     
     if(value == 0){
-        Fl_Window* new_win = new Fl_Window(win_size, win_size, "instructions");    
+        win->new_win = new Fl_Window(win_size, win_size, "instructions");    
         Fl_Multiline_Output *o = new Fl_Multiline_Output((gap/2), (gap/2), \
-            new_win->w()-gap, new_win->h()-gap);
+            win->new_win->w()-gap, win->new_win->h()-gap);
         o->value("Hi");
-        new_win->callback((Fl_Callback*) win_i_cb, win);
-        new_win->add(o);
-        new_win->show();
+        win->new_win->callback((Fl_Callback*) win_i_cb, win);
+        win->new_win->add(o);
+        win->new_win->show();
     }
     
     win->no_instruction_wins++;
@@ -274,6 +275,7 @@ void Settings_Window::win_i_cb(Fl_Widget* obj, Settings_Window* win)
 /** Appropriately close all the currently open FLTK windows */
 void Settings_Window::close_all()
 {
-    game -> hide_window();
-    this -> hide();
+    Fl::delete_widget(Fl::next_window(Fl::first_window()));
+    Fl::delete_widget(new_win);
+    Fl::delete_widget(this);
 }

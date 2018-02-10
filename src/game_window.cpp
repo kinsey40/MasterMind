@@ -32,7 +32,7 @@
  * control the games functionality are defined. 
  */
 
-
+#include <iostream>
 #include <vector>
 #include <sstream>
 #include <assert.h>
@@ -41,6 +41,7 @@
 #include <FL/Fl_Button.H>
 #include <FL/Fl_Double_Window.H>
 #include <FL/Fl_Box.H>
+#include <FL/fl_draw.H>
 #include "game_window.h"
 #include "settings_window.h"
 
@@ -71,6 +72,7 @@ void Game_Window::show_window(std::vector<int> data)
     std::srand(time(NULL));
 
     if(window_already_open == false){
+        end_win=NULL;
         d.clear();
         d = data;
         no_of_pins = data[0];
@@ -89,7 +91,7 @@ void Game_Window::show_window(std::vector<int> data)
         draw_numbers();
         add_rows();
         add_other_buttons();
-
+        
         this->callback((Fl_Callback*) win_cb, this);
         this->end();
         this->show();
@@ -320,39 +322,34 @@ void Game_Window::check_but_cb(Fl_Widget* obj, Game_Window* win)
 /** Callback for the 'reset' button */
 void Game_Window::reset_but_cb(Fl_Widget* obj, Game_Window* win)
 {
-    win->reset_win();
-}
-
-
-/** Cast the Settings_Window class onto the Fl::first_window() parameter in 
- * order to call the function which re-launches the game 
- */
-void Game_Window::reset_win()
-{
-    if(end_win != NULL){
-        end_win->hide();
+    if(win->end_win != NULL){
+        win->end_win->hide();
     }
     
-    this->hide();
-    Settings_Window* upper_win = (Settings_Window*) Fl::first_window();
-    
     window_already_open = false;
-    upper_win -> launch_game();
     
+    Fl::delete_widget(win);
+    
+    Settings_Window* upper_win = static_cast<Settings_Window*>(Fl::first_window());
+    upper_win->launch_game();
 }
+
+
 
 
 /** Callback for the Quit button, uses the Fl::next_window() to grab the 
  * Settings_Window, whilst passing the address of the Game_Window 
  */
 void Game_Window::quit_but_cb(Fl_Widget* obj, Game_Window* win)
-{ 
+{
     if(win->end_win != NULL){
-        win->end_win->hide();
+        std::cout << win->end_win << std::endl;
+        Fl::delete_widget(win->end_win);
     }
     
-    Settings_Window* w = (Settings_Window*) Fl::next_window(Fl::first_window());
-    w->close_all();
+    Fl::delete_widget(win);
+    Fl::delete_widget(Fl::first_window());
+    
 }
 
 
@@ -362,11 +359,11 @@ void Game_Window::quit_but_cb(Fl_Widget* obj, Game_Window* win)
 void Game_Window::c_settings_but_cb(Fl_Widget* obj, Game_Window* win)
 {
     if(win->end_win != NULL){
-        win->end_win->hide();
+        Fl::delete_widget(win->end_win);
     }
     
     window_already_open = false;
-    win->hide();
+    Fl::delete_widget(win);
 }
 
 
@@ -510,6 +507,11 @@ void Game_Window::game_lost()
 /** This allows the user to appropriately hide the window and re-set the flag */
 void Game_Window::win_cb(Fl_Widget* obj, Game_Window* win)
 {
+    
+    if(win->end_win != NULL){
+        Fl::delete_widget(win->end_win);
+    }
+    
     window_already_open = false;
-    win->hide();
+    Fl::delete_widget(win);
 }

@@ -105,6 +105,8 @@ private:
     /** Constant for the name of the window */
     const char* name;
     
+    //void* game_ptr;
+    
     /** Relevant integer values for the various game parameters */
     int no_of_pins;
     int no_of_allowed_guesses;
@@ -121,6 +123,7 @@ private:
     Fl_Choice* label_no_of_pins;
     Fl_Choice* label_no_of_allowed_guesses;
     Fl_Choice* label_no_of_colours;
+    Fl_Window* new_win;
 };
 
 #endif /* SETTINGS_WINDOW_H */
