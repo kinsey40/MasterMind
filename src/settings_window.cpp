@@ -72,7 +72,7 @@ void Settings_Window::set_starting_values()
     no_of_pins = 4;
     no_of_allowed_guesses = 10;
     no_of_colour_options = 4;
-    
+    game_window_open = false;
 }
 
 
@@ -83,6 +83,15 @@ void Settings_Window::populate_data()
     data.push_back(no_of_pins);
     data.push_back(no_of_colour_options);
     data.push_back(no_of_allowed_guesses);
+}
+
+
+void Settings_Window::set_game_window_open()
+{
+    if(game_window_open == true) game_window_open = false;
+    else game_window_open = true;
+    
+    std::cout << game_window_open << std::endl;
 }
 
 
@@ -175,8 +184,12 @@ void Settings_Window::launch_game()
     int w = 150 * no_of_pins;
     int h = (50 * no_of_allowed_guesses) + 150;
     
-    Game_Window* game = new Game_Window(w, h, "Game");
-    game->show_window(data);
+    std::cout << game_window_open << std::endl;
+    if(game_window_open == false) {
+        set_game_window_open();
+        Game_Window* game = new Game_Window(w, h, "Game");
+        game->show_window(data);
+    }
 }
 
 
@@ -266,7 +279,7 @@ void Settings_Window::instructions_cb(Fl_Widget* obj, Settings_Window* win)
 void Settings_Window::win_i_cb(Fl_Widget* obj, Settings_Window* win)
 {
     Fl_Window* i_win = (Fl_Window*) obj;
-    i_win->hide();
+    Fl::delete_widget(i_win);
 
     win->no_instruction_wins = 0;
 }

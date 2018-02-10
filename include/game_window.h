@@ -57,9 +57,8 @@ public:
     /** Constructor */
     Game_Window(int w, int h, const char* n);
         
-    /** Show and hide windows allow control from Settings_Window class */
+    /** Show window allows control from Settings_Window class */
     void show_window(std::vector<int> data);
-    void hide_window();
     
     /** Add lines to make the window look a lot neater */
     void add_vertical_lines();

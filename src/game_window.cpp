@@ -46,10 +46,6 @@
 #include "settings_window.h"
 
 
-/** Global variable controls only having one Game_Window open */
-bool Game_Window::window_already_open = false;
-
-
 /** Constructor */
 Game_Window::Game_Window(int w, int h, const char* n)
     : Fl_Double_Window(w, h, n),
@@ -71,44 +67,28 @@ void Game_Window::show_window(std::vector<int> data)
 {   
     std::srand(time(NULL));
 
-    if(window_already_open == false){
-        end_win=NULL;
-        d.clear();
-        d = data;
-        no_of_pins = data[0];
-        no_of_colour_options = data[1];
-        no_of_allowed_guesses = data[2];
-    
-        window_already_open = true;
-        current_row = 0;
-        game_end = false;
-    
-        this->begin();
+    end_win=NULL;
+    d.clear();
+    d = data;
+    no_of_pins = data[0];
+    no_of_colour_options = data[1];
+    no_of_allowed_guesses = data[2];
 
-        generate_answer();
-        add_vertical_lines();
-        add_horizontal_lines();
-        draw_numbers();
-        add_rows();
-        add_other_buttons();
-        
-        this->callback((Fl_Callback*) win_cb, this);
-        this->end();
-        this->show();
+    current_row = 0;
+    game_end = false;
 
-    }
-}
+    this->begin();
 
+    generate_answer();
+    add_vertical_lines();
+    add_horizontal_lines();
+    draw_numbers();
+    add_rows();
+    add_other_buttons();
 
-/** Hide the window, allows user to close Game_Window from Settings_Window */
-void Game_Window::hide_window()
-{
-    if(end_win != NULL){
-        end_win->hide();
-    }
-    
-    this->hide();
-    window_already_open = false;
+    this->callback((Fl_Callback*) win_cb, this);
+    this->end();
+    this->show();
 }
 
 
@@ -326,11 +306,12 @@ void Game_Window::reset_but_cb(Fl_Widget* obj, Game_Window* win)
         win->end_win->hide();
     }
     
-    window_already_open = false;
-    
     Fl::delete_widget(win);
     
-    Settings_Window* upper_win = static_cast<Settings_Window*>(Fl::first_window());
+    Settings_Window* upper_win = \
+            static_cast<Settings_Window*>(Fl::first_window());
+    
+    upper_win->set_game_window_open();
     upper_win->launch_game();
 }
 
@@ -362,7 +343,10 @@ void Game_Window::c_settings_but_cb(Fl_Widget* obj, Game_Window* win)
         Fl::delete_widget(win->end_win);
     }
     
-    window_already_open = false;
+    Settings_Window* upper_win = \
+            static_cast<Settings_Window*>(Fl::first_window());
+    
+    upper_win->set_game_window_open();
     Fl::delete_widget(win);
 }
 
@@ -512,6 +496,9 @@ void Game_Window::win_cb(Fl_Widget* obj, Game_Window* win)
         Fl::delete_widget(win->end_win);
     }
     
-    window_already_open = false;
+    Settings_Window* upper_win = \
+            static_cast<Settings_Window*>(Fl::first_window());
+    
+    upper_win->set_game_window_open();
     Fl::delete_widget(win);
 }

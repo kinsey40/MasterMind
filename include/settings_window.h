@@ -58,6 +58,7 @@ public:
     
     /** Set the default values for the game */
     void set_starting_values();
+    void set_game_window_open();
     
     /** Populate the window and the data vector */
     void populate_window();
@@ -105,7 +106,7 @@ private:
     /** Constant for the name of the window */
     const char* name;
     
-    //void* game_ptr;
+    bool game_window_open;
     
     /** Relevant integer values for the various game parameters */
     int no_of_pins;
