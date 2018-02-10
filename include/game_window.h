@@ -97,7 +97,6 @@ public:
     static void reset_but_cb(Fl_Widget* obj, Game_Window* win);
     
     
-    
 private:
     int width;
     int height;

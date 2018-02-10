@@ -330,7 +330,6 @@ void Game_Window::quit_but_cb(Fl_Widget* obj, Game_Window* win)
     
     Fl::delete_widget(win);
     Fl::delete_widget(Fl::first_window());
-    
 }
 
 
@@ -485,7 +484,7 @@ void Game_Window::game_lost()
         end_win->show();
     }
     
-    game_end == true;
+    game_end = true;
 }
 
 

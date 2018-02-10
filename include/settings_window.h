@@ -106,6 +106,7 @@ private:
     /** Constant for the name of the window */
     const char* name;
     
+    /** Bool, to prevent more than one game being open */
     bool game_window_open;
     
     /** Relevant integer values for the various game parameters */

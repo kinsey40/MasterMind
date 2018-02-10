@@ -43,10 +43,6 @@
 #include "game_window.h"
 
 
-/** Global variable declared as static to interact with relevant callback */
-//static Game_Window* game;
-
-
 /** Constructor */
 Settings_Window::Settings_Window(int w, int h, const char* n)
 : 
@@ -290,7 +286,11 @@ void Settings_Window::win_i_cb(Fl_Widget* obj, Settings_Window* win)
 /** Appropriately close all the currently open FLTK windows */
 void Settings_Window::close_all()
 {
-    Fl::delete_widget(Fl::next_window(Fl::first_window()));
-    Fl::delete_widget(new_win);
+    if(game_window_open == true){
+      Fl::delete_widget(Fl::next_window(Fl::first_window()));  
+    }
+    if(no_instruction_wins != 0){
+        Fl::delete_widget(new_win);
+    }
     Fl::delete_widget(this);
 }
