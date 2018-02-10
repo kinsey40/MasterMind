@@ -39,6 +39,7 @@
 #include <FL/Fl_Button.H>
 #include <FL/Fl_Choice.H>
 #include <FL/Fl_Multiline_Output.H>
+#include <FL/Fl_JPEG_Image.H>
 #include "settings_window.h"
 #include "game_window.h"
 
@@ -256,15 +257,39 @@ void Settings_Window::no_of_colours_5_cb(Fl_Widget* obj, Settings_Window* win)
 void Settings_Window::instructions_cb(Fl_Widget* obj, Settings_Window* win)
 {
     int value = win->no_instruction_wins;
-    int win_size = 300;
-    int gap = 10;
+    int win_size = 500;
+    int x_gap = 10;
+    int y_top_gap = 10;
+    int y_gap = 300;
+    
+    Fl_JPEG_Image* p = new Fl_JPEG_Image("resources/game_image.jpg");
     
     if(value == 0){
-        win->new_win = new Fl_Window(win_size, win_size, "instructions");    
-        Fl_Multiline_Output *o = new Fl_Multiline_Output((gap/2), (gap/2), \
-            win->new_win->w()-gap, win->new_win->h()-gap);
-        o->value("Hi");
+        win->new_win = new Fl_Window(win_size, win_size, "instructions");
+        Fl_Multiline_Output *o = new Fl_Multiline_Output((x_gap/2), \
+                (y_top_gap/2), win->new_win->w()-x_gap, \
+                win->new_win->h()-y_gap);
+        o->wrap(1);
+        o->value(
+        "Choose the settings on the settings screen"
+        "and hit the launch button when ready. The following screen will appear,"
+        " click on the square boxes to input a guess, the result is displayed on"
+        " the right of the screen. \n\n To input a guess, click the boxes, then "
+        " click the 'check' button. A white box indicates a correct place, a "
+        " black square indicates a wrong place, but correct colour.\n\n The image "
+        " below shows the game in flow, it should be straightforward to "
+        " understand. The answer will be displayed upon game ending at the "
+        " bottom of the window."
+        );
+        
+        Fl_Box* image_box = new Fl_Box((x_gap/2), win->new_win->h()-y_gap, \
+                win->new_win->w()-x_gap, (y_gap - y_top_gap));
+        
+        image_box->image(p);
+        image_box->redraw();
+        
         win->new_win->callback((Fl_Callback*) win_i_cb, win);
+        win->new_win->add(image_box);
         win->new_win->add(o);
         win->new_win->show();
     }
