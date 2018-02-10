@@ -61,7 +61,6 @@ result_w(result_width)
     no_of_allowed_guesses = data[2];
     answer_row = a_row;
     draw_boxes();
-    
 }
 
 
