@@ -312,10 +312,15 @@ void Settings_Window::win_i_cb(Fl_Widget* obj, Settings_Window* win)
 void Settings_Window::close_all()
 {
     if(game_window_open == true){
-      Fl::delete_widget(Fl::next_window(Fl::first_window()));  
+        Game_Window* g = static_cast<Game_Window*>(Fl::next_window(Fl::first_window()));
+        g->delete_end_win();
+        Fl::delete_widget(g);
+        Fl::delete_widget(Fl::next_window(Fl::first_window()));
     }
+          
     if(no_instruction_wins != 0){
         Fl::delete_widget(new_win);
     }
+    
     Fl::delete_widget(this);
 }

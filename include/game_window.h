@@ -89,6 +89,9 @@ public:
     int get_pin_width() const;
     int get_result_width() const;
     
+    /** Delete the end window from another class */
+    void delete_end_win();
+    
     /** All the widget callbacks */
     static void check_but_cb(Fl_Widget* obj, Game_Window* win);
     static void win_cb(Fl_Widget* obj, Game_Window* win);
@@ -122,13 +125,13 @@ private:
     const int o_but_height;
     const int result_width;
     
+    const char* name;
+    
     /** Whether the game has ended, act appropriately */
     bool game_end;
     
     /** Prevents more than one Game_Window being opened */
     static bool window_already_open;
-    
-    const char* name;
     
     /** Vectors for all the guess, answers and encoding of the answer 
      * evaluation

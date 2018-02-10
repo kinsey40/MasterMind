@@ -317,7 +317,7 @@ void Game_Window::check_but_cb(Fl_Widget* obj, Game_Window* win)
 void Game_Window::reset_but_cb(Fl_Widget* obj, Game_Window* win)
 {
     if(win->end_win != NULL){
-        win->end_win->hide();
+        Fl::delete_widget(win->end_win);
     }
     
     Fl::delete_widget(win);
@@ -330,20 +330,22 @@ void Game_Window::reset_but_cb(Fl_Widget* obj, Game_Window* win)
 }
 
 
-
-
 /** Callback for the Quit button, uses the Fl::next_window() to grab the 
  * Settings_Window, whilst passing the address of the Game_Window 
  */
 void Game_Window::quit_but_cb(Fl_Widget* obj, Game_Window* win)
 {
     if(win->end_win != NULL){
-        std::cout << win->end_win << std::endl;
         Fl::delete_widget(win->end_win);
     }
     
     Fl::delete_widget(win);
-    Fl::delete_widget(Fl::first_window());
+    
+    Settings_Window* upper_win = \
+            static_cast<Settings_Window*>(Fl::first_window());
+    
+    upper_win->set_game_window_open();
+    upper_win->close_all();
 }
 
 
@@ -505,14 +507,23 @@ void Game_Window::game_lost()
 /** This allows the user to appropriately hide the window and re-set the flag */
 void Game_Window::win_cb(Fl_Widget* obj, Game_Window* win)
 {
-    
     if(win->end_win != NULL){
         Fl::delete_widget(win->end_win);
     }
+    
+    Fl::delete_widget(win);
     
     Settings_Window* upper_win = \
             static_cast<Settings_Window*>(Fl::first_window());
     
     upper_win->set_game_window_open();
-    Fl::delete_widget(win);
+}
+
+
+/** Delete end_win from the Settings_Window class */
+void Game_Window::delete_end_win()
+{
+    if(end_win != NULL){
+        Fl::delete_widget(end_win);
+    }
 }

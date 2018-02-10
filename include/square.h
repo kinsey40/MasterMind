@@ -66,15 +66,14 @@ public:
     void freeze();
     void reveal(int data);
     void reveal_result(int data);
-    
-    /** Declared as public, so it can be accessed by the Game_Window class*/
-    int no_of_clicks; 
+
     
 private:
     /** Integer variables, easy access for each individual object */
     int x_val, y_val;
     int no_colors;
     int v;
+    int no_of_clicks;
     
     /** Keep the width and height of the squares constant */
     const int width, height;

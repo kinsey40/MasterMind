@@ -32,6 +32,7 @@
  * associated functions and variables for that class.
  */
 
+
 #ifndef SETTINGS_WINDOW_H
 #define SETTINGS_WINDOW_H
 
