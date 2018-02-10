@@ -88,10 +88,13 @@ void Settings_Window::populate_data()
 
 void Settings_Window::set_game_window_open()
 {
-    if(game_window_open == true) game_window_open = false;
-    else game_window_open = true;
-    
-    std::cout << game_window_open << std::endl;
+    if(game_window_open == true) { 
+        game_window_open = false;
+    }
+
+    else { 
+        game_window_open = true;
+    }
 }
 
 
@@ -184,7 +187,6 @@ void Settings_Window::launch_game()
     int w = 150 * no_of_pins;
     int h = (50 * no_of_allowed_guesses) + 150;
     
-    std::cout << game_window_open << std::endl;
     if(game_window_open == false) {
         set_game_window_open();
         Game_Window* game = new Game_Window(w, h, "Game");

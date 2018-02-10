@@ -343,11 +343,12 @@ void Game_Window::c_settings_but_cb(Fl_Widget* obj, Game_Window* win)
         Fl::delete_widget(win->end_win);
     }
     
+    Fl::delete_widget(win);
+    
     Settings_Window* upper_win = \
             static_cast<Settings_Window*>(Fl::first_window());
     
     upper_win->set_game_window_open();
-    Fl::delete_widget(win);
 }
 
 
