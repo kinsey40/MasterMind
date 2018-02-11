@@ -91,7 +91,7 @@ void Row::draw_boxes()
 
 void Row::unfreeze()
 {
-    for(int i=0; i<squares_vec.size(); i++){
+    for(int i=0; i<squares_vec.size(); i++) {
         Square* sq = squares_vec[i];
         sq -> unfreeze();
     }
@@ -100,7 +100,7 @@ void Row::unfreeze()
 
 void Row::freeze()
 {
-    for(int i=0; i<squares_vec.size(); i++){
+    for(int i=0; i<squares_vec.size(); i++) {
         Square* sq = squares_vec[i];
         sq -> freeze();
     }
@@ -115,7 +115,7 @@ std::vector<int> Row::get_guess()
     int g;
     guess.clear();
     
-    for(int i=0; i<squares_vec.size(); i++){
+    for(int i=0; i<squares_vec.size(); i++) {
         g = squares_vec[i]->get_number_of_clicks();
         guess.push_back(g);
     }
@@ -127,8 +127,8 @@ std::vector<int> Row::get_guess()
 /** Reveal the answer row at the end of the game */
 void Row::reveal(std::vector<int> answer_data)
 {
-    if(answer_row){
-        for(int i=0; i<squares_vec.size(); i++){
+    if(answer_row) {
+        for(int i=0; i<squares_vec.size(); i++) {
             Square* sq = squares_vec[i];
             sq -> reveal(answer_data[i]);
         }
@@ -139,7 +139,7 @@ void Row::reveal(std::vector<int> answer_data)
 /** Reveal how correct the guess is by the user */
 void Row::reveal_result(std::vector<int> guess_data)
 {
-    for(int i=0; i<results_vec.size(); i++){
+    for(int i=0; i<results_vec.size(); i++) {
         Square* sq_r = results_vec[i];
         sq_r -> reveal_result(guess_data[i]);
     }

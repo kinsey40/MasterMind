@@ -33,7 +33,6 @@
  */
 
 
-#include <iostream>
 #include <vector>
 #include <sstream>
 #include <assert.h>
@@ -111,7 +110,6 @@ void Game_Window::add_vertical_lines()
     lines.push_back(v_line_1);
     lines.push_back(v_line_2);
     lines.push_back(v_line_3);
-    
 }
 
 
@@ -139,7 +137,6 @@ void Game_Window::add_horizontal_lines()
             lines.push_back(line);
         }
     }
-    
 }
 
 

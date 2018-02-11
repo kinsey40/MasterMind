@@ -32,7 +32,6 @@
  */
 
 
-#include <iostream>
 #include <FL/Fl.H>
 #include <FL/Fl_Window.H>
 #include <FL/Fl_Box.H>
@@ -277,7 +276,7 @@ void Settings_Window::instructions_cb(Fl_Widget* obj, Settings_Window* win)
     
     Fl_JPEG_Image* p = new Fl_JPEG_Image("resources/game_image.jpg");
     
-    if(value == 0){
+    if(value == 0) {
         win->new_win = new Fl_Window(win_size, win_size, "instructions");
         Fl_Multiline_Output *o = new Fl_Multiline_Output((x_gap/2), \
                 (y_top_gap/2), win->new_win->w()-x_gap, \
@@ -324,7 +323,7 @@ void Settings_Window::win_i_cb(Fl_Widget* obj, Settings_Window* win)
 /** Appropriately close all the currently open FLTK windows */
 void Settings_Window::close_all()
 {
-    if(game_window_open == true){
+    if(game_window_open == true) {
         Game_Window* g = static_cast<Game_Window*>(Fl::next_window( \
                 Fl::first_window()));
         g->delete_end_win();
@@ -332,7 +331,7 @@ void Settings_Window::close_all()
         Fl::delete_widget(Fl::next_window(Fl::first_window()));
     }
           
-    if(no_instruction_wins != 0){
+    if(no_instruction_wins != 0) {
         Fl::delete_widget(new_win);
     }
     

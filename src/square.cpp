@@ -52,7 +52,7 @@ Square::Square(int x, int y, int w, int h, \
       answer(a)
 {
     no_of_clicks = 0;
-    if(a == true){
+    if(a == true) {
         this->hide();
     }
         
@@ -62,7 +62,7 @@ Square::Square(int x, int y, int w, int h, \
 /** Inherits from the pre-made handle of Fl_Box, calls the colour function */
 int Square::handle(int e)
 {   
-    if(frozen == true){
+    if(frozen == true) {
         return 1;
     }
     
