@@ -77,9 +77,12 @@ public:
     static void no_of_pins_5_cb(Fl_Widget* obj, Settings_Window* win);
     
     /** Callbacks for the number of allowed guesses menu options */
-    static void no_of_allowed_guesses_8_cb(Fl_Widget* obj, Settings_Window* win);
-    static void no_of_allowed_guesses_9_cb(Fl_Widget* obj, Settings_Window* win);
-    static void no_of_allowed_guesses_10_cb(Fl_Widget* obj, Settings_Window* win);
+    static void no_of_allowed_guesses_8_cb(Fl_Widget* obj, \
+            Settings_Window* win);
+    static void no_of_allowed_guesses_9_cb(Fl_Widget* obj, \
+            Settings_Window* win);
+    static void no_of_allowed_guesses_10_cb(Fl_Widget* obj, \
+            Settings_Window* win);
     
     /** Callbacks for the number of colours menu options */
     static void no_of_colours_3_cb(Fl_Widget* obj, Settings_Window* win);

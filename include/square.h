@@ -78,7 +78,7 @@ private:
     /** Keep the width and height of the squares constant */
     const int width, height;
     
-    /** Whether this is an 'answer' square, i.e. where the result is displayed*/
+    /** Whether this is an 'answer' square, where the result is displayed */
     bool answer;
     
     /** Whether the square is currently  'frozen' and therefore inactive */

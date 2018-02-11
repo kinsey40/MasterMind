@@ -40,16 +40,16 @@
 
 
 /** Constructor */
-Square::Square(int x, int y, int w, int h, int no_of_color_options, bool f, bool a)
-:
-Fl_Box(FL_UP_BOX, x, y, w, h, ""),
-x_val(x), 
-y_val(y),
-width(w),
-height(h),
-no_colors(no_of_color_options),
-frozen(f),
-answer(a)
+Square::Square(int x, int y, int w, int h, \
+        int no_of_color_options, bool f, bool a)
+    : Fl_Box(FL_UP_BOX, x, y, w, h, ""),
+      x_val(x), 
+      y_val(y),
+      width(w),
+      height(h),
+      no_colors(no_of_color_options),
+      frozen(f),
+      answer(a)
 {
     no_of_clicks = 0;
     if(a == true){

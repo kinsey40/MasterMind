@@ -41,12 +41,12 @@
 
 /* Constructor */
 Draw_Line::Draw_Line(int X, int Y, int X2, int Y2, bool thick, const char* L=0)
-:Fl_Widget(X,Y,X2,Y2,L),
-x1(X),
-y1(Y),
-x2(X2),
-y2(Y2),
-t(thick)
+    : Fl_Widget(X,Y,X2,Y2,L),
+      x1(X),
+      y1(Y),
+      x2(X2),
+      y2(Y2),
+      t(thick)
 {
     draw();
 }

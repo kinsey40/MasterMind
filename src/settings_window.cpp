@@ -46,11 +46,10 @@
 
 /** Constructor */
 Settings_Window::Settings_Window(int w, int h, const char* n)
-: 
-Fl_Window(w, h, n),
-width(w),
-height(h),
-name(n)
+    : Fl_Window(w, h, n),
+      width(w),
+      height(h),
+      name(n)
 {
     set_starting_values();
     
@@ -128,12 +127,14 @@ void Settings_Window::populate_window()
     int second_y_val = first_y_val + (1 * (l_height + l_gap));
     int third_y_val = first_y_val + (2 * (l_height + l_gap));
     
-    message = new Fl_Box(m_x_val, m_y_val, m_width, m_height, "Welcome to\nMasterMind");
+    message = new Fl_Box(m_x_val, m_y_val, m_width, m_height, \
+            "Welcome to\nMasterMind");
     message->box(FL_NO_BOX);
     message->labelsize(30);
     message->labelfont(FL_BOLD);
     
-    instructions = new Fl_Button(i_x_val, i_y_val, i_width, i_height, "Instructions");
+    instructions = new Fl_Button(i_x_val, i_y_val, i_width, i_height, \
+            "Instructions");
     instructions->labelsize(14);
     instructions->labelcolor(FL_BLUE);
     instructions->labelfont(FL_BOLD);
@@ -142,20 +143,29 @@ void Settings_Window::populate_window()
     but = new Fl_Button(width, height, but_width, but_height, "Launch");
     but -> callback((Fl_Callback*) launch_cb, this);
     
-    label_no_of_pins = new Fl_Choice(x_value, first_y_val, l_width, l_height, "No. of pins:");
+    label_no_of_pins = new Fl_Choice(x_value, first_y_val, l_width, l_height, \
+            "No. of pins:");
     label_no_of_pins->add("3", 0, (Fl_Callback*) no_of_pins_3_cb, this, 0);
     label_no_of_pins->add("4", 0, (Fl_Callback*) no_of_pins_4_cb, this, 0);
     label_no_of_pins->add("5", 0, (Fl_Callback*) no_of_pins_5_cb, this, 0);
     
-    label_no_of_allowed_guesses = new Fl_Choice(x_value, second_y_val, l_width, l_height, "No. of guesses:");
-    label_no_of_allowed_guesses->add("8", 0, (Fl_Callback*) no_of_allowed_guesses_8_cb, this, 0);
-    label_no_of_allowed_guesses->add("9", 0, (Fl_Callback*) no_of_allowed_guesses_9_cb, this, 0);
-    label_no_of_allowed_guesses->add("10", 0, (Fl_Callback*) no_of_allowed_guesses_10_cb, this, 0);
+    label_no_of_allowed_guesses = new Fl_Choice(x_value, second_y_val, \
+            l_width, l_height, "No. of guesses:");
+    label_no_of_allowed_guesses->add("8", 0, \
+            (Fl_Callback*) no_of_allowed_guesses_8_cb, this, 0);
+    label_no_of_allowed_guesses->add("9", 0, \
+            (Fl_Callback*) no_of_allowed_guesses_9_cb, this, 0);
+    label_no_of_allowed_guesses->add("10", 0, \
+            (Fl_Callback*) no_of_allowed_guesses_10_cb, this, 0);
     
-    label_no_of_colours = new Fl_Choice(x_value, third_y_val, l_width, l_height, "No. of colours:");
-    label_no_of_colours->add("3", 0, (Fl_Callback*) no_of_colours_3_cb, this, 0);
-    label_no_of_colours->add("4", 0, (Fl_Callback*) no_of_colours_4_cb, this, 0);
-    label_no_of_colours->add("5", 0, (Fl_Callback*) no_of_colours_5_cb, this, 0);
+    label_no_of_colours = new Fl_Choice(x_value, third_y_val, l_width, \
+            l_height, "No. of colours:");
+    label_no_of_colours->add("3", 0, \
+            (Fl_Callback*) no_of_colours_3_cb, this, 0);
+    label_no_of_colours->add("4", 0, \
+            (Fl_Callback*) no_of_colours_4_cb, this, 0);
+    label_no_of_colours->add("5", 0, \
+            (Fl_Callback*) no_of_colours_5_cb, this, 0);
     
     label_no_of_pins->value(1);
     label_no_of_allowed_guesses->value(2);
@@ -217,19 +227,22 @@ void Settings_Window::no_of_pins_5_cb(Fl_Widget* obj, Settings_Window* win)
 }
 
 
-void Settings_Window::no_of_allowed_guesses_8_cb(Fl_Widget* obj, Settings_Window* win)
+void Settings_Window::no_of_allowed_guesses_8_cb(Fl_Widget* obj, \
+        Settings_Window* win)
 {
     win->no_of_allowed_guesses = 8;
 }
 
 
-void Settings_Window::no_of_allowed_guesses_9_cb(Fl_Widget* obj, Settings_Window* win)
+void Settings_Window::no_of_allowed_guesses_9_cb(Fl_Widget* obj, \
+        Settings_Window* win)
 {
     win->no_of_allowed_guesses = 9;
 }
 
 
-void Settings_Window::no_of_allowed_guesses_10_cb(Fl_Widget* obj, Settings_Window* win)
+void Settings_Window::no_of_allowed_guesses_10_cb(Fl_Widget* obj, \
+        Settings_Window* win)
 {
     win->no_of_allowed_guesses = 10;
 }
@@ -271,15 +284,15 @@ void Settings_Window::instructions_cb(Fl_Widget* obj, Settings_Window* win)
                 win->new_win->h()-y_gap);
         o->wrap(1);
         o->value(
-        "Choose the settings on the settings screen"
-        "and hit the launch button when ready. The following screen will appear,"
-        " click on the square boxes to input a guess, the result is displayed on"
-        " the right of the screen. \n\n To input a guess, click the boxes, then "
-        " click the 'check' button. A white box indicates a correct place, a "
-        " black square indicates a wrong place, but correct colour.\n\n The image "
-        " below shows the game in flow, it should be straightforward to "
-        " understand. The answer will be displayed upon game ending at the "
-        " bottom of the window."
+        "Choose the settings on the settings screen and hit the launch button"
+        " when ready. The following screen will appear, click on the square"
+        " boxes to input a guess, the result is displayed on the right of the"
+        " screen. \n\n To input a guess, click the boxes, then click the check"
+        " button. A white box indicates a correct place, a black square"
+        " indicates a wrong place, but correct colour.\n\n The image below"
+        " shows the game in flow, it should be straightforward to understand."
+        " The answer will be displayed upon game ending at the bottom of the"
+        " window."
         );
         
         Fl_Box* image_box = new Fl_Box((x_gap/2), win->new_win->h()-y_gap, \
@@ -312,7 +325,8 @@ void Settings_Window::win_i_cb(Fl_Widget* obj, Settings_Window* win)
 void Settings_Window::close_all()
 {
     if(game_window_open == true){
-        Game_Window* g = static_cast<Game_Window*>(Fl::next_window(Fl::first_window()));
+        Game_Window* g = static_cast<Game_Window*>(Fl::next_window( \
+                Fl::first_window()));
         g->delete_end_win();
         Fl::delete_widget(g);
         Fl::delete_widget(Fl::next_window(Fl::first_window()));

@@ -35,9 +35,11 @@
 #ifndef ROW_H
 #define ROW_H
 
+
 #include <vector>
 #include <FL/Fl.H>
 #include "square.h"
+
 
 /** The row class couples together several widgets, as each row is individual 
  * and should be treated as such 
