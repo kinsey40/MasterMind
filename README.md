@@ -2,10 +2,7 @@
 MasterMind, made in C++ using FLTK 1.3.4 as the GUI. Netbeans was used as the IDE. 
 
 # Setup
-If you would to just like to run the application, see the Debug and Release versions in the dist folder. Note that these will only work for linux machines, if you are using a different OS, you'll need to build the application on your machine. After cloning this repository using the below command, just run the application and follow the in-game instructions. 
-
-via ssh:
-git clone git@github.com:kinsey40/MasterMind.git
+If you would to just like to run the application, see the Debug and Release versions in the dist folder. Note that these will only work for linux machines, if you are using a different OS, you'll need to build the application on your machine. After cloning this repository, just run the application and follow the in-game instructions. 
 
 If instead, you'd like to clone to the repository to build and compile the actual code, then you'll need to ensure that you install the FLTK 1.3.4 library which can be found [here](http://www.fltk.org/index.php). See the FLTK set-up instructions for details about how to install this library (it follows the same format of most C++ external libraries (configure -> make -> make install -> clean). 
 
