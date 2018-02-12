@@ -69,6 +69,13 @@ public:
     /** Return the guess, called by the Settings_Window class */
     std::vector<int> get_guess();
     
+    /** Set the squares in given row to default colour */
+    void set_to_gray();
+    
+    /** Show and hide the squares in the row */
+    void hide();
+    void show();
+    
     
 private:
     /** Integer values for placement, width, height (of widgets) and data 

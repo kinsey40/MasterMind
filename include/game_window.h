@@ -55,7 +55,7 @@ class Game_Window: public Fl_Double_Window
 {
 public:
     /** Constructor */
-    Game_Window(int w, int h, const char* n);
+    Game_Window(int w, int h, const char* n, bool pvp);
         
     /** Show window allows control from Settings_Window class */
     void show_window(std::vector<int> data);
@@ -76,6 +76,15 @@ public:
     
     /** Generate an answer randomly */
     void generate_answer();
+    
+    /** Functions for the PvP facility */
+    void add_input_button();
+    void set_answer();
+    void reset_created_items();
+    
+    /** Sets up and reveals the game */
+    void setup_game();
+    void reveal_game();
     
     /** Act in case of game win and game lost */
     void game_win();
@@ -98,6 +107,7 @@ public:
     static void c_settings_but_cb(Fl_Widget* obj, Game_Window* win);
     static void quit_but_cb(Fl_Widget* obj, Game_Window* win);
     static void reset_but_cb(Fl_Widget* obj, Game_Window* win);
+    static void input_but_cb(Fl_Widget* obj, Game_Window* win);
     
     
 private:
@@ -130,6 +140,9 @@ private:
     /** Whether the game has ended, act appropriately */
     bool game_end;
     
+    /** State whether this is a pvp game or not */
+    bool pvp_game;
+    
     /** Prevents more than one Game_Window being opened */
     static bool window_already_open;
     
@@ -146,6 +159,7 @@ private:
     /** Store these widgets in vectors to access them and delete them */
     std::vector<Draw_Line*> lines;
     std::vector<Row*> rows_vec;
+    std::vector<Fl_Box*> numbers_vec;
     
     /** The FLTK widget declarations */
     Fl_Button* reset_but;

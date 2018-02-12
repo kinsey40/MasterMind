@@ -144,3 +144,30 @@ void Row::reveal_result(std::vector<int> guess_data)
         sq_r -> reveal_result(guess_data[i]);
     }
 }
+
+
+void Row::set_to_gray()
+{
+    for(int i=0; i<squares_vec.size(); i++) {
+        Square* sq = squares_vec[i];
+        sq->reveal(0);
+    }
+}
+
+
+void Row::hide()
+{
+    for(int i=0; i<squares_vec.size(); i++) {
+        Square* sq = squares_vec[i];
+        sq->hide();
+    }
+}
+
+
+void Row::show()
+{
+    for(int i=0; i<squares_vec.size(); i++) {
+        Square* sq = squares_vec[i];
+        sq->show();
+    }
+}

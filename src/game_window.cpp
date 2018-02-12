@@ -47,11 +47,12 @@
 
 
 /** Constructor */
-Game_Window::Game_Window(int w, int h, const char* n)
+Game_Window::Game_Window(int w, int h, const char* n, bool pvp)
     : Fl_Double_Window(w, h, n),
       width(w),
       height(h),
       name(n),
+      pvp_game(pvp),
       pin_width(100),
       result_width(30),
       first_x_coord(30),
@@ -76,28 +77,65 @@ void Game_Window::show_window(std::vector<int> data)
 
     current_row = 0;
     game_end = false;
+    
+    second_x_coord = (no_of_pins * get_pin_width() + first_x_coord);
+    second_y_coord = first_y_coord * (no_of_allowed_guesses + 2);
+    third_x_coord = second_x_coord + (no_of_pins * get_result_width());
 
     this->begin();
 
-    generate_answer();
+    add_other_buttons();
     add_vertical_lines();
     add_horizontal_lines();
+    
+    this->callback((Fl_Callback*) win_cb, this);
+    
+    if(pvp_game == true) {
+        add_input_button();
+    }
+    else {
+        generate_answer();
+    }
+    
+    setup_game();
+}
+
+
+/** Set the game window up to begin with */
+void Game_Window::setup_game()
+{
     draw_numbers();
     add_rows();
-    add_other_buttons();
-
-    this->callback((Fl_Callback*) win_cb, this);
+    
     this->end();
     this->show();
 }
 
 
+/** Reveal the game in PvP mode */
+void Game_Window::reveal_game()
+{   
+    for(int i=0; i < numbers_vec.size(); i++) {
+        numbers_vec[i]->show();
+    }
+    
+    for(int i=0; i < (rows_vec.size()); i++) {
+        if(i == rows_vec.size()-1) {
+            rows_vec[i]->freeze();
+        }
+        else if(i == 0) {
+            rows_vec[i]->show();
+            rows_vec[i]->unfreeze();
+        }
+        else {
+            rows_vec[i]->show();
+        }
+    }
+}
+
+
 void Game_Window::add_vertical_lines()
 {   
-    second_x_coord = (no_of_pins * get_pin_width() + first_x_coord);
-    second_y_coord = first_y_coord * (no_of_allowed_guesses + 2);
-    third_x_coord = second_x_coord + (no_of_pins * get_result_width());
-    
     int third_y_coord = first_y_coord * (no_of_allowed_guesses + 1);
     
     Draw_Line* v_line_1 = new Draw_Line(first_x_coord, first_y_coord, \
@@ -201,6 +239,11 @@ void Game_Window::draw_numbers()
         Fl_Box* b = new Fl_Box(2, ((i+1)*first_y_coord), (first_x_coord - 5), \
                 first_y_coord, input);
         b->box(FL_FLAT_BOX);
+        numbers_vec.push_back(b);
+        
+        if(pvp_game == true) {
+            b->hide();
+        }
     }
 }
 
@@ -221,9 +264,20 @@ void Game_Window::add_rows()
         else {
             obj = new Row(d, first_y_coord, first_x_coord, second_x_coord, \
                     pin_width, y_val, result_width);
+            
+            if(pvp_game == true) {
+                obj->hide();
+            }
         }
         
         rows_vec.push_back(obj);
+    }
+    
+    if(pvp_game == true){
+        current_row = rows_vec.size()-1;
+    }
+    else {
+        current_row = 0;
     }
     
     rows_vec[current_row] -> unfreeze();
@@ -392,8 +446,10 @@ bool Game_Window::evaluate_guess()
     passing_guess.clear();
     
     assert(no_of_pins == current_guess.size());
-    assert(no_of_pins == answers.size());
-
+    if(pvp_game == false){
+        assert(no_of_pins == answers.size());
+    }
+    
     for(int j=0; j < no_of_pins; j++) {
         if(answers[j] == current_guess[j]) {
             right_place += 1;
@@ -499,6 +555,52 @@ void Game_Window::game_lost()
     }
     
     game_end = true;
+}
+
+
+/** Creates the input button */
+void Game_Window::add_input_button()
+{
+    check_but -> label("Input");
+    check_but -> redraw_label();
+    check_but -> callback((Fl_Callback*) input_but_cb, this);
+}
+
+
+/** The input buttons callback, uses the already implemented get_guess */
+void Game_Window::input_but_cb(Fl_Widget* obj, Game_Window* win)
+{
+    obj->label("Check");
+    obj->redraw_label();
+    bool incom;
+    
+    incom = win -> get_guess();
+    
+    if(incom == false) {
+        win -> set_answer();
+    }
+    
+    win->reset_created_items();
+    win->reveal_game();
+}
+
+
+/** Set the answer to the returned value */
+void Game_Window::set_answer()
+{
+    answers = current_guess;
+}
+
+
+/** Reset everything when playing in PvP mode */
+void Game_Window::reset_created_items()
+{
+    check_but -> callback((Fl_Callback*) check_but_cb, this);
+    
+    rows_vec[current_row]->set_to_gray();
+    
+    current_guess.clear();
+    current_row = 0;
 }
 
 

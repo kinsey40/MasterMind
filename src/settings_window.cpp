@@ -68,6 +68,7 @@ void Settings_Window::set_starting_values()
     no_of_allowed_guesses = 10;
     no_of_colour_options = 4;
     game_window_open = false;
+    pvp = false;
 }
 
 
@@ -103,9 +104,9 @@ void Settings_Window::populate_window()
     int but_height = 50;
     
     int width = (this->w() / 2) - (but_width / 2);
-    int height = 250;
+    int height = 290;
     
-    int l_width = 80;
+    int l_width = 120;
     int l_height = 20;
     
     int l_gap = 15;
@@ -125,6 +126,7 @@ void Settings_Window::populate_window()
     int first_y_val = 140;
     int second_y_val = first_y_val + (1 * (l_height + l_gap));
     int third_y_val = first_y_val + (2 * (l_height + l_gap));
+    int fourth_y_val = first_y_val + (3 * (l_height + l_gap));
     
     message = new Fl_Box(m_x_val, m_y_val, m_width, m_height, \
             "Welcome to\nMasterMind");
@@ -144,12 +146,14 @@ void Settings_Window::populate_window()
     
     label_no_of_pins = new Fl_Choice(x_value, first_y_val, l_width, l_height, \
             "No. of pins:");
+    label_no_of_pins->textsize(12);
     label_no_of_pins->add("3", 0, (Fl_Callback*) no_of_pins_3_cb, this, 0);
     label_no_of_pins->add("4", 0, (Fl_Callback*) no_of_pins_4_cb, this, 0);
     label_no_of_pins->add("5", 0, (Fl_Callback*) no_of_pins_5_cb, this, 0);
     
     label_no_of_allowed_guesses = new Fl_Choice(x_value, second_y_val, \
             l_width, l_height, "No. of guesses:");
+    label_no_of_allowed_guesses->textsize(12);
     label_no_of_allowed_guesses->add("8", 0, \
             (Fl_Callback*) no_of_allowed_guesses_8_cb, this, 0);
     label_no_of_allowed_guesses->add("9", 0, \
@@ -159,6 +163,7 @@ void Settings_Window::populate_window()
     
     label_no_of_colours = new Fl_Choice(x_value, third_y_val, l_width, \
             l_height, "No. of colours:");
+    label_no_of_colours->textsize(12);
     label_no_of_colours->add("3", 0, \
             (Fl_Callback*) no_of_colours_3_cb, this, 0);
     label_no_of_colours->add("4", 0, \
@@ -166,9 +171,18 @@ void Settings_Window::populate_window()
     label_no_of_colours->add("5", 0, \
             (Fl_Callback*) no_of_colours_5_cb, this, 0);
     
+    label_game_type = new Fl_Choice(x_value, fourth_y_val, l_width, \
+            l_height, "Game type:");
+    label_game_type->textsize(12);
+    label_game_type->add("Player vs Player", 0, \
+            (Fl_Callback*) pvp_cb, this, 0);
+    label_game_type->add("Player vs Comp.", 0, \
+            (Fl_Callback*) pvc_cb, this, 0);
+    
     label_no_of_pins->value(1);
     label_no_of_allowed_guesses->value(2);
     label_no_of_colours->value(1);
+    label_game_type->value(1);
     
     this->add(message);
     this->add(instructions);
@@ -176,6 +190,7 @@ void Settings_Window::populate_window()
     this->add(label_no_of_pins);
     this->add(label_no_of_allowed_guesses);
     this->add(label_no_of_colours);
+    this->add(label_game_type);
 }
 
 
@@ -195,7 +210,7 @@ void Settings_Window::launch_game()
     
     if(game_window_open == false) {
         set_game_window_open();
-        Game_Window* game = new Game_Window(w, h, "Game");
+        Game_Window* game = new Game_Window(w, h, "Game", pvp);
         game->show_window(data);
     }
 }
@@ -262,6 +277,18 @@ void Settings_Window::no_of_colours_4_cb(Fl_Widget* obj, Settings_Window* win)
 void Settings_Window::no_of_colours_5_cb(Fl_Widget* obj, Settings_Window* win)
 {
     win->no_of_colour_options = 5;
+}
+
+
+void Settings_Window::pvp_cb(Fl_Widget* obj, Settings_Window* win)
+{
+    win->pvp = true;
+}
+
+
+void Settings_Window::pvc_cb(Fl_Widget* obj, Settings_Window* win)
+{
+    win->pvp = false;
 }
 
 

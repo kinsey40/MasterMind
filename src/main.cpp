@@ -39,7 +39,7 @@
 
 int main() 
 {
-    Settings_Window obj(400, 350, "settings");
+    Settings_Window obj(400, 370, "settings");
     return Fl::run();
 }
 

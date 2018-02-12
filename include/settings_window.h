@@ -89,6 +89,10 @@ public:
     static void no_of_colours_4_cb(Fl_Widget* obj, Settings_Window* win);
     static void no_of_colours_5_cb(Fl_Widget* obj, Settings_Window* win);
     
+    /** Callbacks for the pvp options */
+    static void pvp_cb(Fl_Widget* obj, Settings_Window* win);
+    static void pvc_cb(Fl_Widget* obj, Settings_Window* win);
+    
     /** Callback for the instructions button */
     static void instructions_cb(Fl_Widget* obj, Settings_Window* win);
     
@@ -113,6 +117,9 @@ private:
     /** Bool, to prevent more than one game being open */
     bool game_window_open;
     
+    /** Bool to identify if game is pvp or not */
+    bool pvp;
+    
     /** Relevant integer values for the various game parameters */
     int no_of_pins;
     int no_of_allowed_guesses;
@@ -129,6 +136,7 @@ private:
     Fl_Choice* label_no_of_pins;
     Fl_Choice* label_no_of_allowed_guesses;
     Fl_Choice* label_no_of_colours;
+    Fl_Choice* label_game_type;
     Fl_Window* new_win;
 };
 
