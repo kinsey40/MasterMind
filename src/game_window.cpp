@@ -578,10 +578,9 @@ void Game_Window::input_but_cb(Fl_Widget* obj, Game_Window* win)
     
     if(incom == false) {
         win -> set_answer();
+        win->reset_created_items();
+        win->reveal_game();
     }
-    
-    win->reset_created_items();
-    win->reveal_game();
 }
 
 
