@@ -356,10 +356,11 @@ void Game_Window::add_other_buttons()
 void Game_Window::check_but_cb(Fl_Widget* obj, Game_Window* win)
 {
     bool incom;
+    bool g_over = false;
     incom = win->get_guess();
     
     if(incom == false){
-        bool g_over = win->evaluate_guess();
+        g_over = win->evaluate_guess();
         if(g_over == false) win->advance_row();
     }
 }
@@ -570,13 +571,13 @@ void Game_Window::add_input_button()
 /** The input buttons callback, uses the already implemented get_guess */
 void Game_Window::input_but_cb(Fl_Widget* obj, Game_Window* win)
 {
-    obj->label("Check");
-    obj->redraw_label();
     bool incom;
-    
     incom = win -> get_guess();
     
     if(incom == false) {
+        obj->label("Check");
+        obj->redraw_label();
+        
         win -> set_answer();
         win->reset_created_items();
         win->reveal_game();
