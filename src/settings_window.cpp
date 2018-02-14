@@ -38,7 +38,9 @@
 #include <FL/Fl_Button.H>
 #include <FL/Fl_Choice.H>
 #include <FL/Fl_Multiline_Output.H>
-#include <FL/Fl_JPEG_Image.H>
+#include <FL/Fl_Shared_Image.H>
+#include <FL/Fl_RGB_Image.H>
+#include "image_data.h"
 #include "settings_window.h"
 #include "game_window.h"
 
@@ -301,7 +303,7 @@ void Settings_Window::instructions_cb(Fl_Widget* obj, Settings_Window* win)
     int y_top_gap = 10;
     int y_gap = 300;
     
-    Fl_JPEG_Image* p = new Fl_JPEG_Image("resources/game_image.jpg");
+    Fl_RGB_Image* p = new Fl_RGB_Image(MagickImage,217,270,3);
     
     if(value == 0) {
         win->new_win = new Fl_Window(win_size, win_size, "instructions");
