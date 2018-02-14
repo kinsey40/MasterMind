@@ -16,9 +16,10 @@ To build the project, I created a binary file using the MagikImage software (ava
 
 > mv resources/image_data.h include/
 
-Note: You may want to check you have the MagikImage software installed by running: identify -version 
-if you don't then you can get that software from [here](http://www.imagemagick.org/script/index.php).
+Note: You may want to check you have the MagikImage software installed by running: 
+> identify -version
 
+if you don't then you can get that software from [here](http://www.imagemagick.org/script/index.php).
 If you have any problems with the set-up process, than please message or e-mail me. 
 
 # Known Issues
@@ -30,6 +31,3 @@ If anyone has any suggestions for additional features or wants to imrpove/add to
 
 # Comments
 I don't have a great deal of experience with C++, so any improvements regarding the code are greatly appreciated and welcomed! I found the FLTK GUI to be quite clunky and not particularly well documented. The simplicity of it's graphics and speed are a big benefit though. I would however, like to extend my thanks and appreciation to the FLTK team, for developing and maintaining this library. 
-
-
-
