@@ -9,8 +9,11 @@ If instead, you'd like to clone to the repository to build and compile the actua
 To build the project, I created a binary file using the MagikImage software (available on most linux distros), which was named game_image.h - this file needs to be included in the settings_window.cpp file. The program should subsequently work appropriately if this is completed. For the current setup to work correctly (and in fact this is the easiest method to get the code to work correctly) do the following (from the project directory): 
 
 > cd resources
+
 > convert game_image.jpg image_data.h
+
 > cd ..
+
 > mv resources/image_data.h include/
 
 Note: You may want to check you have the MagikImage software installed by running: identify -version 
