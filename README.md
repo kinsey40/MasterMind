@@ -6,7 +6,7 @@ If you would to just like to run the application, see the Debug and Release vers
 
 If instead, you'd like to clone to the repository to build and compile the actual code, then you'll need to ensure that you install the FLTK 1.3.4 library which can be found [here](http://www.fltk.org/index.php). See the FLTK set-up instructions for details about how to install this library (it follows the same format of most C++ external libraries (configure -> make -> make install -> clean). 
 
-You'll also need to ensure that you add the library to the project, using your chosen IDE. Further, you'll also need to make sure you add the -lfltk_images and -lfltk_jpeg to the link line (the .a files for these can be found in the fltk folders lib file). 
+To build the project, I created a binary file using the MagikImage software (available on most linux distros), which was named game_image.h - this file needs to be included in the main.cpp file. The program should subsequently work appropriately if this is completed.  
 
 If you have any problems with the set-up process, than please message or e-mail me. 
 
